@@ -57,6 +57,18 @@ module.exports = function (grunt) {
             server: ['.tmp'],
         },
 
+        // Mocha config
+        simplemocha: {
+            options: {
+                globals: ['expect'],
+                timeout: 3000,
+                ignoreLeaks: false,
+                ui: 'bdd',
+                reporter: 'tap'
+            },
+            all: { src: ['test/**/*.js'] }
+        },
+
         // Hint Config
         jshint: {
             options: {
@@ -242,12 +254,17 @@ module.exports = function (grunt) {
     // Register Tasks
     // Workon
     grunt.registerTask('workon', 'Start working on this project.', [
+        'simplemocha',
         'jshint',
         'sass:dev',
         'express:dev',
         'watch'
     ]);
 
+    // Test
+    grunt.registerTask('test', 'Running tests with Mocha.', [
+        'simplemocha'
+    ]);
 
     // Restart
     grunt.registerTask('restart', 'Restart the server.', [
