@@ -2,9 +2,8 @@
 
 module.exports = function(app){
 
-	// GET/index
+	// GET /
 	app.get('/', function(request, response, next) {
 	    response.render('index')
 	})
-
 }

@@ -5,7 +5,8 @@
   "dependencies": {
     "cradle": "^0.6.9",
     "express": "~3.4.0",
-    "express3-handlebars": "0.4.x"
+    "express3-handlebars": "0.4.x",
+    "runkeeper-js": "^1.0.0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
