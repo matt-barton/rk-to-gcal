@@ -53,13 +53,12 @@ app.use(session({ secret: 'supersecretsecretything' }))
 // config
 var rkOptions = require('./config/runkeeper.config.json')
 
-// Dependencies
-
+// libraries
 var utils = require('./lib/utils')
 var Runkeeper = require('./lib/runkeeper')
 var rk = new Runkeeper(rkOptions, utils)
 
-// Routing
+// routing
 require('./lib/routes')(app, rk)
 
 //var code = 'eyJkYXRhIjp7InIiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvcmsiLCJjIjoiMDE2MDliMWE5NDBiNGFmZmFkNzEyNGEyODRmOWVlYjQiLCJ0IjoxNDQxMDk4NTM1NjY0LCJ1IjoxMDM5NjB9LCJtYWMiOiJNZXhMMit5ZDBYMGJYckRGNVJSOGFqV1FzWkxoTGFkeElFc3ZtNDNmWW44PSJ9'
