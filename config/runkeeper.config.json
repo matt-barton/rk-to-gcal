@@ -1,0 +1,7 @@
+{
+    "client_id" : "01609b1a940b4affad7124a284f9eeb4",
+    "client_secret" : "cd15680cd8b64b6aa885b5f24f8a79ea",
+    "auth_url" : "https://runkeeper.com/apps/authorize",
+    "access_token_url" : "https://runkeeper.com/apps/token",
+    "redirect_uri" : "http://localhost:3000/auth/runkeeper/callback"
+}

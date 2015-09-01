@@ -1,16 +1,15 @@
 'use strict'
 
 // Express Dependencies
+var http = require('http')
 var express = require('express')
 var app = express()
-var port = 3000
-
-// Use Handlebars for templating
-var exphbs = require('express3-handlebars')
-var hbs
-
-// For gzip compression
-app.use(express.compress())
+var port     = process.env.PORT || 3000;
+var exphbs       = require('express-handlebars')
+var morgan       = require('morgan');
+var cookieParser = require('cookie-parser')
+var bodyParser   = require('body-parser')
+var session      = require('express-session')
 
 /*
  * Config for Production and Development
@@ -44,12 +43,26 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(__dirname + '/assets'))
 }
 
-// Set Handlebars
+// set-up express
+app.use(morgan('dev'))
+app.use(cookieParser())
+app.use(bodyParser())
 app.set('view engine', 'handlebars')
+app.use(session({ secret: 'supersecretsecretything' }))
+
+// config
+var rkOptions = require('./config/runkeeper.config.json')
+
+// Dependencies
+
+var utils = require('./lib/utils')
+var Runkeeper = require('./lib/runkeeper')
+var rk = new Runkeeper(rkOptions, utils)
 
 // Routing
-require('./routes')(app)
+require('./lib/routes')(app, rk)
 
+//var code = 'eyJkYXRhIjp7InIiOiJodHRwOi8vbG9jYWxob3N0OjMwMDAvcmsiLCJjIjoiMDE2MDliMWE5NDBiNGFmZmFkNzEyNGEyODRmOWVlYjQiLCJ0IjoxNDQxMDk4NTM1NjY0LCJ1IjoxMDM5NjB9LCJtYWMiOiJNZXhMMit5ZDBYMGJYckRGNVJSOGFqV1FzWkxoTGFkeElFc3ZtNDNmWW44PSJ9'
 
 /*
 *
@@ -59,29 +72,8 @@ require('./routes')(app)
 *
 */
 
-var rkOptions = {
-// Client ID: 
-    // This value is the OAuth 2.0 client ID for your application.  
-    client_id : '01609b1a940b4affad7124a284f9eeb4',
 
-    // Client Secret:  
-    // This value is the OAuth 2.0 shared secret for your application.   
-    client_secret : 'cd15680cd8b64b6aa885b5f24f8a79ea',
-
-    // Authorization URL:   
-    // This is the URL to which your application should redirect the user in order to authorize access to his or her RunKeeper account.   
-    auth_url : "https://runkeeper.com/apps/authorize",
-
-    // Access Token URL:    
-    // This is the URL at which your application can convert an authorization code to an access token. 
-    access_token_url : "https://runkeeper.com/apps/token",
-
-    // Redirect URI:   
-    // This is the URL that RK sends user to after successful auth  
-    // URI naming based on Runkeeper convention 
-    redirect_uri : "http://localhost:3000/rk"
-}
-
+/*
 var runkeeper = require('runkeeper-js')
 var rkClient = new runkeeper.HealthGraph(rkOptions)
 
@@ -134,7 +126,7 @@ app.get('/rk', function (request, response, next) {
     response.render('index')
 })
 
-/*
+/
 *
 *
 * End Runkeeper
@@ -143,5 +135,5 @@ app.get('/rk', function (request, response, next) {
 */
 
 // Start it up
-app.listen(process.env.PORT || port)
+app.listen(port)
 console.log('Express started on port ' + port)

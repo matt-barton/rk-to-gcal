@@ -10,9 +10,11 @@ module.exports = function (grunt) {
 
         // Watch Config
         watch: {
-            files: ['views/**/*'],
-            options: {
-                livereload: true
+            livereload: {
+                files: ['views/**/*'],
+                options: {
+                    livereload: true
+                }
             },
             scripts: {
                 files: [
@@ -34,7 +36,13 @@ module.exports = function (grunt) {
                 ],
             },
             express: {
-                files:  [ 'app.js', '!**/node_modules/**', '!Gruntfile.js' ],
+                files:  [
+                    'app.js',
+                    '!**/node_modules/**',
+                    '!Gruntfile.js',
+                    'config/*.json',
+                    'lib/*.js'
+                ],
                 tasks:  [ 'express:dev' ],
                 options: {
                     nospawn: true // Without this option specified express won't be reloaded
