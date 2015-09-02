@@ -18,7 +18,12 @@ describe('runkeeper', function() {
 			'Then the response object is used to trigger the redirect', function (done) {
 
 			var Runkeeper = require('../lib/runkeeper')
-			var rk = new Runkeeper(rkOptions, utils)
+			var app = {
+				lib: {
+					utils: utils
+				}
+			}
+			var rk = new Runkeeper(rkOptions, app)
 
 			var writeHeadCalled = false
 			var endCaled = false
@@ -46,8 +51,13 @@ describe('runkeeper', function() {
 			'When the runkeeper auth page is requested ' +
 			'Then the rk auth url redirected to is correctly formed', function (done) {
 
+			var app = {
+				lib: {
+					utils: utils
+				}
+			}
 			var Runkeeper = require('../lib/runkeeper')
-			var rk = new Runkeeper(rkOptions, utils)
+			var rk = new Runkeeper(rkOptions, app)
 
 			var targetUrl = 'AUTH_URL?client_id=CLIENT_ID&response_type=code&redirect_uri=REDIRECT_URI'
 

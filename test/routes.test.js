@@ -18,13 +18,17 @@ describe('routes', function () {
 			'Then a get handler is created for /auth/runkeeper', function (done) {
 			var correctUri = false
 			var handlerExists = false
+			var auth = require('../lib/auth')
 			var mockExpressApp = {
-				get: function (uri, cb) {
+				get: function (uri, middleware, cb) {
 					if (uri == '/auth/runkeeper') {
 						correctUri = true
 						if (typeof cb == 'function') handlerExists = true
 						done()
 					}
+				},
+				lib: {
+					auth: auth
 				}
 			}
 
@@ -33,45 +37,68 @@ describe('routes', function () {
 			handlerExists.should.equal(true)
 		})
 
-		it ('Given the /auth/runkeeper url is requested ' +
-			'When a user makes a request ' +
-			'Then the runkeeper module is asked to ' +
-			'redirect the user to the rk auth page', function (done) {
-
-			var rkRedirection = false
+		it ('When routes are set up ' +
+			'Then middleware requireing authentication is used on the /auth/runkeeper route', function (done) {
+			var correctUri = false
+			var auth = require('../lib/auth')
 			var mockExpressApp = {
-				get: function (uri, cb) {
+				get: function (uri, middleware, cb) {
 					if (uri == '/auth/runkeeper') {
-						cb ()
+						correctUri = true
+						middleware.should.equal(auth.requiresAuthentication)
+						done()
 					}
+				},
+				lib: {
+					auth: auth
 				}
 			}
-			var mockRunkeeperModule = {
-				redirectToRKAuth: function () {
-					rkRedirection = true
+
+			var routes = require('../lib/routes')(mockExpressApp)
+			correctUri.should.equal(true)
+		})
+
+		it ('Given the user is not authenticated ' +
+			'When the /auth/runkeeper url is requested ' +
+			'Then the response.redirect method is used to ' +
+			'redirect the user to the /auth/login', function (done) {
+
+			var mockAuth = {
+				requiresAuthentication: function (req, res) {
+					res.redirect('/auth/login')
+				}
+			}
+			var mockResponse = {
+				redirect: function(url) {
+					url.should.equal('/auth/login')
 					done()
 				}
 			}
+			var mockExpressApp = {
+				get: function (uri, middleware, cb) {
+					if (uri == '/auth/runkeeper') {
+						middleware ({}, mockResponse)
+					}
+				},
+				lib: {
+					auth: mockAuth
+				}
+			}
 
-			var routes = require('../lib/routes')(mockExpressApp, mockRunkeeperModule)
-			rkRedirection.should.equal(true)
+			var routes = require('../lib/routes')(mockExpressApp)
 		})
 
-		it ('Given the /auth/runkeeper url is requested ' +
-			'When a user makes a request ' +
-			'Then the runkeeper module is supplied with ' +
-			'the express response object', function (done) {
+		it ('Given the user is authenticated ' +
+			'When the /auth/runkeeper url is requested ' +
+			'Then the response.redirect method is used to ' +
+			'redirect the user to the /auth/login', function (done) {
+			var rkRedirection = false
 
+			var mockAuth = {
+				requiresAuthentication: function () {}
+			}
 			var mockResponseObject = {
 				'i am': 'a mock'
-			}
-			var rkRedirection = false
-			var mockExpressApp = {
-				get: function (uri, cb) {
-					if (uri == '/auth/runkeeper') {
-						cb (null, mockResponseObject)
-					}
-				}
 			}
 			var mockRunkeeperModule = {
 				redirectToRKAuth: function (response) {
@@ -80,10 +107,20 @@ describe('routes', function () {
 					done()
 				}
 			}
+			var mockExpressApp = {
+				get: function (uri, middleware, cb) {
+					if (uri == '/auth/runkeeper') {
+						cb (null, mockResponseObject)
+					}
+				},
+				lib: {
+					auth: mockAuth,
+					rk:   mockRunkeeperModule
+				}
+			}
 
-			var routes = require('../lib/routes')(mockExpressApp, mockRunkeeperModule)
+			var routes = require('../lib/routes')(mockExpressApp)
 			rkRedirection.should.equal(true)
 		})
-
 	})
 })
