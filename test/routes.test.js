@@ -299,7 +299,7 @@ describe ('login', function () {
 		}
 		var mockAuth = {
 			login: function (username, password, cb) {
-				cb()
+				cb(null, true)
 			}
 		}
 		mockExpressApp.post = function (uri, cb) {
@@ -311,6 +311,40 @@ describe ('login', function () {
 
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
+
+	it ('Given the posted identity and password are not valid ' +
+		'When the /auth/login route is posted to ' +
+		'Then the login view is rendered with an error message', function (done) {
+
+		var mockRequest = {
+			body: {
+				identity: 'IDENTITY',
+				password: 'PASSWORD'
+			}
+		}
+		var mockResponse = {
+			render: function (viewName, data) {
+				viewName.should.equal('login')
+				data.should.be.type('object')
+				data.loginError.should.equal('Unknown email address or password')
+				done()
+			}
+		}
+		var mockAuth = {
+			login: function (username, password, cb) {
+				cb(null, false)
+			}
+		}
+		mockExpressApp.post = function (uri, cb) {
+			if (uri == '/auth/login') {
+				cb (mockRequest, mockResponse)
+			}
+		}
+		mockExpressApp.lib.auth = mockAuth
+
+		var routes = require('../lib/routes')(mockExpressApp)
+	})
+
 
 	it ('Given an error occurs while validating a login ' +
 		'When the /auth/login route is posted to ' +
