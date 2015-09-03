@@ -3,3 +3,5 @@ node_modules
 .sass-cache
 app/bower_components
 mocha.bat
+rk2gcal.sublime-project
+rk2gcal.sublime-workspace
