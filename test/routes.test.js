@@ -10,35 +10,68 @@ var mockUtils = {
 	buildUrl: function () {}
 }
 
+function assertHandlerExists (done, path, useMiddleware, useAuthMiddleware) {
+
+	var correctUri = false
+	var mockFn = function mockFn () {
+		var who = 'i am the mock authentication middleware'
+	}
+	var mockAuth = {
+		requiresAuthentication: mockFn
+	}
+	var mockExpressApp = {
+		get: function (uri, fn1, fn2) {
+
+			if (uri == path) {
+				correctUri = true
+				var fn1Type = typeof fn1
+				var fn2Type = typeof fn2
+
+				fn1Type.should.equal('function')
+				fn2Type.should.equal(useMiddleware 
+					? 'function' 
+					: 'undefined')
+
+				if (useAuthMiddleware) {
+					fn1.should.equal(mockFn)
+				}
+
+				done()
+			}
+		},
+		lib: {
+			auth: mockAuth
+		}
+	}
+	var routes = require('../lib/routes')(mockExpressApp)
+	correctUri.should.equal(true)
+}
+
 describe('routes', function () {
 	
-	describe('runkeeper', function () {
+	describe('home', function () {
+
+		it ('When routes are set up ' +
+			'Then a handler is created for the root of the website', function (done) {
+
+			assertHandlerExists(done, '/')
+		})
+	})
+
+	describe('auth', function () {
 
 		it ('When routes are set up ' +
 			'Then a get handler is created for /auth/runkeeper', function (done) {
-			var correctUri = false
-			var handlerExists = false
-			var auth = require('../lib/auth')
-			var mockExpressApp = {
-				get: function (uri, middleware, cb) {
-					if (uri == '/auth/runkeeper') {
-						correctUri = true
-						if (typeof cb == 'function') handlerExists = true
-						done()
-					}
-				},
-				lib: {
-					auth: auth
-				}
-			}
 
-			var routes = require('../lib/routes')(mockExpressApp)
-			correctUri.should.equal(true)
-			handlerExists.should.equal(true)
+			assertHandlerExists(done, '/auth/runkeeper', true)
 		})
 
 		it ('When routes are set up ' +
-			'Then middleware requireing authentication is used on the /auth/runkeeper route', function (done) {
+			'Then middleware requiring authentication is used on the /auth/runkeeper route', function (done) {
+
+			assertHandlerExists(done, '/auth/runkeeper', true, true)
+
+				/*
 			var correctUri = false
 			var auth = require('../lib/auth')
 			var mockExpressApp = {
@@ -56,6 +89,7 @@ describe('routes', function () {
 
 			var routes = require('../lib/routes')(mockExpressApp)
 			correctUri.should.equal(true)
+			*/
 		})
 
 		it ('Given the user is not authenticated ' +
@@ -121,6 +155,12 @@ describe('routes', function () {
 
 			var routes = require('../lib/routes')(mockExpressApp)
 			rkRedirection.should.equal(true)
+		})
+
+		it('When routes are set up ' +
+			'Then a handler is set up for /auth/login', function (done) {
+	
+			assertHandlerExists(done, '/auth/login')
 		})
 	})
 })
