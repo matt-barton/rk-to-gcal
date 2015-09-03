@@ -68,7 +68,7 @@ module.exports = function (grunt) {
         // Mocha config
         simplemocha: {
             options: {
-                globals: ['expect'],
+                globals: ['expect', 'lr'],
                 timeout: 3000,
                 ignoreLeaks: false,
                 ui: 'bdd',
