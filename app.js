@@ -56,10 +56,16 @@ var rkOptions = require('./config/runkeeper.config.json')
 // libraries
 app.lib = {}
 
-app.lib.utils = require('./lib/utils')
 var Runkeeper = require('./lib/runkeeper')
+var Auth = require('./lib/auth')
+//var Couch  = require('./lib/couch')
+//var db = new Couch
+var db = {
+    getUser: function() {}
+}
+app.lib.utils = require('./lib/utils')
 app.lib.rk = new Runkeeper(rkOptions, app)
-app.lib.auth = require('./lib/auth')
+app.lib.auth = new Auth(db)
 
 // routing
 require('./lib/routes')(app)
