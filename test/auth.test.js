@@ -134,13 +134,18 @@ describe ('auth', function () {
 
 	describe ('login', function() {
 
-		it ('Given a username is not supplied ' +
+		it ('Given an identity is not supplied ' +
 			'When logging in ' +
 			'Then an error is invoked', function (done) {
 
 			var auth = new Auth
 
-			auth.login(null, 'PASSWORD', function(e) {
+			var request = {
+				body: {
+					password: 'PASSWORD'
+				}
+			}
+			auth.login(request, function(e) {
 				e.should.be.type('object')
 				e.message.should.equal('Username is required')
 				done()
@@ -153,7 +158,12 @@ describe ('auth', function () {
 
 			var auth = new Auth
 
-			auth.login('USERNAME', null, function(e) {
+			var request = {
+				body: {
+					identity: 'IDENTITY'
+				}
+			}
+			auth.login(request, function(e) {
 				e.should.be.type('object')
 				e.message.should.equal('Password is required')
 				done()
@@ -166,13 +176,19 @@ describe ('auth', function () {
 
 			var mockDb = {
 				getUser: function(username) {
-					username.should.equal('USERNAME')
+					username.should.equal('IDENTITY')
 					done()
 				}
 			}
 			var auth = new Auth(mockDb)
 
-			auth.login('USERNAME', 'PASSWORD', function() {})
+			var request = {
+				body: {
+					identity: 'IDENTITY',
+					password: 'PASSWORD'
+				}
+			}
+			auth.login(request, function() {})
 		})
 
 		it ('Given an error occurs ' +
@@ -185,15 +201,21 @@ describe ('auth', function () {
 				}
 			}
 			var auth = new Auth(mockDb)
+			var request = {
+				body: {
+					identity: 'IDENTITY',
+					password: 'PASSWORD'
+				}
+			}
 
-			auth.login('USERNAME', 'PASSWORD', function(e) {
+			auth.login(request, function(e) {
 				e.should.be.type('object')
 				e.message.should.equal('AN ERROR')
 				done()
 			})
 		})
 
-		it ('Given no user account is found for the supplied username ' +
+		it ('Given no user account is found for the supplied identity ' +
 			'When logging in ' +
 			'Then a negative response is returned', function (done) {
 
@@ -204,7 +226,13 @@ describe ('auth', function () {
 			}
 			var auth = new Auth(mockDb)
 
-			auth.login('USERNAME', 'PASSWORD', function(e, result) {
+			var request = {
+				body: {
+					identity: 'IDENTITY',
+					password: 'PASSWORD'
+				}
+			}
+			auth.login(request, function(e, result) {
 				should.not.exist(e)
 				result.should.equal(false)
 				done()
@@ -225,7 +253,13 @@ describe ('auth', function () {
 			}
 			var auth = new Auth(mockDb)
 
-			auth.login('USERNAME', 'PASSWORD', function(e, result) {
+			var request = {
+				body: {
+					identity: 'IDENTITY',
+					password: 'PASSWORD'
+				}
+			}
+			auth.login(request, function(e, result) {
 				should.not.exist(e)
 				result.should.equal(false)
 				done()
@@ -239,7 +273,7 @@ describe ('auth', function () {
 			'Then the stored user record is returned', function (done) {
 
 			var mockUser = {
-				identity: 'USERNAME',
+				identity: 'IDENTITY',
 				pwHash: bcrypt.hashSync('PASSWORD')
 			}
 			var mockDb = {
@@ -249,7 +283,14 @@ describe ('auth', function () {
 			}
 			var auth = new Auth(mockDb)
 
-			auth.login('USERNAME', 'PASSWORD', function(e, result) {
+			var request = {
+				body: {
+					identity: 'IDENTITY',
+					password: 'PASSWORD'
+				},
+				session: {}
+			}
+			auth.login(request, function(e, result) {
 				should.not.exist(e)
 				result.should.equal(mockUser)
 				done()
@@ -257,5 +298,35 @@ describe ('auth', function () {
 		})
 
 
+		it ('Given a user account is found for the supplied username ' +
+			'And the password supplied matches the stored password ' +
+			'When logging in ' +
+			'Then the stored user record is registered in the request seession', function (done) {
+
+			var mockUser = {
+				identity: 'IDENTITY',
+				pwHash: bcrypt.hashSync('PASSWORD')
+			}
+			var mockDb = {
+				getUser: function(username, cb) {
+					cb(null, [mockUser])
+				}
+			}
+			var auth = new Auth(mockDb)
+
+			var request = {
+				body: {
+					identity: 'IDENTITY',
+					password: 'PASSWORD'
+				},
+				session: {}
+			}
+			auth.login(request, function(e, result) {
+				should.not.exist(e)
+				result.should.equal(mockUser)
+				request.session.user.should.equal(mockUser)
+				done()
+			})
+		})
 	})
 })

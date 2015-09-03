@@ -265,9 +265,9 @@ describe ('login', function () {
 			}
 		}
 		var mockAuth = {
-			login: function (username, password) {
-				username.should.equal('IDENTITY')
-				password.should.equal('PASSWORD')
+			login: function (request) {
+				request.body.identity.should.equal('IDENTITY')
+				request.body.password.should.equal('PASSWORD')
 				done()
 			}
 		}
@@ -298,8 +298,8 @@ describe ('login', function () {
 			}
 		}
 		var mockAuth = {
-			login: function (username, password, cb) {
-				cb(null, true)
+			login: function (request, cb) {
+				cb(null, {})
 			}
 		}
 		mockExpressApp.post = function (uri, cb) {
@@ -331,7 +331,7 @@ describe ('login', function () {
 			}
 		}
 		var mockAuth = {
-			login: function (username, password, cb) {
+			login: function (request, cb) {
 				cb(null, false)
 			}
 		}
@@ -363,8 +363,8 @@ describe ('login', function () {
 			}
 		}
 		var mockAuth = {
-			login: function (username, password, cb) {
-				cb(true)
+			login: function (request, cb) {
+				cb(new Error)
 			}
 		}
 		mockExpressApp.post = function (uri, cb) {
