@@ -1,10 +1,7 @@
 'use strict'
 
 var should = require ('should')
-
-var mockExpressApp = {
-	get: function () {}
-}
+var mockExpressApp
 
 var mockUtils = {
 	buildUrl: function () {}
@@ -53,16 +50,102 @@ function assertHandlerExists (done, path, method, useMiddleware, useAuthMiddlewa
 
 describe('routes', function () {
 
-var mockExpressApp
-
 beforeEach(function() {
+	process.env.NODE_ENV = 'development'
 	mockExpressApp = {
 		get: function () {},
 		post: function () {},
+		use: function () {},
 		lib: {
 			auth: {}
 		}
 	}
+})
+
+
+describe('error handling', function () {
+
+	it ('Given headers have not been started ' +
+		'When the error handler is invoked ' +
+		'Then the error view is rendered ' +
+		'And the response status is set to 500', function (done) {
+		var mockError = new Error ('THIS IS THE ERROR')
+		var mockResponse = {
+			headersSent: false,
+			render: function(viewName) {
+				viewName.should.equal('error')
+				done()
+			}
+		}
+
+		mockExpressApp.use = function (cb) {
+			cb(mockError, null, mockResponse)
+		}
+
+		var routes = require('../lib/routes')(mockExpressApp)
+		mockResponse.status.should.equal(500)
+	})
+
+	it ('Given headers have already been started ' +
+		'When the error handler is invoked ' +
+		'Then the thrown error is given to Express to handle', function (done) {
+		var mockError = new Error ('THIS IS THE ERROR')
+		var mockResponse = {
+			headersSent: true
+		}
+		var mockNext = function(e) {
+			e.should.equal(mockError)
+			done()
+		}
+		mockExpressApp.use = function (cb) {
+			cb(mockError, null, mockResponse, mockNext)
+		}
+
+		var routes = require('../lib/routes')(mockExpressApp)
+	})
+
+	it ('Given the application is not running in production mode ' +
+		'When the error handler is invoked ' +
+		'Then the error message displayed is from the thrown error', function (done) {
+		var mockError = new Error ('THIS IS THE ERROR')
+		var mockResponse = {
+			headersSent: false,
+			render: function(viewName, data) {
+				data.should.be.type('object')
+				data.message.should.equal('THIS IS THE ERROR')
+				done()
+			}
+		}
+
+		mockExpressApp.use = function (cb) {
+			cb(mockError, null, mockResponse)
+		}
+
+		var routes = require('../lib/routes')(mockExpressApp)
+	})
+
+	it ('Given the application is running in production mode ' +
+		'When the error handler is invoked ' +
+		'Then the error message displayed is sanitised', function (done) {
+		process.env.NODE_ENV = 'production'
+		var mockError = new Error ('THIS IS THE ERROR')
+		var mockResponse = {
+			headersSent: false,
+			render: function(viewName, data) {
+				data.should.be.type('object')
+				data.message.should.equal('An unexpected error occurred.')
+				done()
+			}
+		}
+
+		mockExpressApp.use = function (cb) {
+			cb(mockError, null, mockResponse)
+		}
+
+		var routes = require('../lib/routes')(mockExpressApp)
+	})
+
+
 })
 
 describe('home', function () {
@@ -348,7 +431,7 @@ describe ('login', function () {
 
 	it ('Given an error occurs while validating a login ' +
 		'When the /auth/login route is posted to ' +
-		'Then the error view is rendered', function (done) {
+		'Then the error is passed to the error handler middleware', function (done) {
 
 		var mockRequest = {
 			body: {
@@ -356,20 +439,19 @@ describe ('login', function () {
 				password: 'PASSWORD'
 			}
 		}
-		var mockResponse = {
-			render: function (viewName) {
-				viewName.should.equal('error')
-				done()
-			}
-		}
+		var error = new Error ('THIS IS THE ERROR')
 		var mockAuth = {
 			login: function (request, cb) {
-				cb(new Error)
+				cb(error)
 			}
+		}
+		var mockErrorHandler = function (e) {
+			e.should.equal(error)
+			done()
 		}
 		mockExpressApp.post = function (uri, cb) {
 			if (uri == '/auth/login') {
-				cb (mockRequest, mockResponse)
+				cb (mockRequest, {}, mockErrorHandler)
 			}
 		}
 		mockExpressApp.lib.auth = mockAuth
