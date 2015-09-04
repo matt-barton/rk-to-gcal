@@ -179,7 +179,7 @@ describe ('auth', function () {
 			'Then a user record is retrieved for the username', function (done) {
 
 			mockApp.lib.db = {
-				getUser: function(username) {
+				getUserByIdentity: function(username) {
 					username.should.equal('IDENTITY')
 					done()
 				}
@@ -200,7 +200,7 @@ describe ('auth', function () {
 			'Then the error is bubbled up', function (done) {
 
 			mockApp.lib.db = {
-				getUser: function(username, cb) {
+				getUserByIdentity: function(username, cb) {
 					cb(new Error ('AN ERROR'))
 				}
 			}
@@ -224,7 +224,7 @@ describe ('auth', function () {
 			'Then a negative response is returned', function (done) {
 
 			mockApp.lib.db = {
-				getUser: function(username, cb) {
+				getUserByIdentity: function(username, cb) {
 					cb(null, [])
 				}
 			}
@@ -249,7 +249,7 @@ describe ('auth', function () {
 			'Then a negative response is returned', function (done) {
 
 			mockApp.lib.db = {
-				getUser: function(username, cb) {
+				getUserByIdentity: function(username, cb) {
 					cb(null, [{
 						pwHash: bcrypt.hashSync('POTATOES')
 					}])
@@ -281,7 +281,7 @@ describe ('auth', function () {
 				pwHash: bcrypt.hashSync('PASSWORD')
 			}
 			mockApp.lib.db = {
-				getUser: function(username, cb) {
+				getUserByIdentity: function(username, cb) {
 					cb(null, [mockUser])
 				}
 			}
@@ -312,7 +312,7 @@ describe ('auth', function () {
 				pwHash: bcrypt.hashSync('PASSWORD')
 			}
 			mockApp.lib.db = {
-				getUser: function(username, cb) {
+				getUserByIdentity: function(username, cb) {
 					cb(null, [mockUser])
 				}
 			}
