@@ -2,7 +2,11 @@
 
 var should = require('should')
 var bcrypt = require('bcrypt-nodejs')
-
+var mockApp = {
+	lib: {
+		db: null
+	}
+}
 describe ('auth', function () {
 
 	var Auth = require('../lib/auth')
@@ -21,7 +25,7 @@ describe ('auth', function () {
 				}
 			}
 
-			var auth = new Auth
+			var auth = new Auth(mockApp)
 
 			auth.requiresAuthentication({}, mockResult)
 
@@ -39,7 +43,7 @@ describe ('auth', function () {
 				}
 			}
 
-			var auth = new Auth
+			var auth = new Auth(mockApp)
 
 			auth.requiresAuthentication({}, mockResult)
 		})
@@ -58,7 +62,7 @@ describe ('auth', function () {
 				session: null
 			}
 
-			var auth = new Auth
+			var auth = new Auth(mockApp)
 
 			auth.requiresAuthentication(mockRequest, mockResult)
 		})
@@ -79,7 +83,7 @@ describe ('auth', function () {
 				session: {}
 			}
 
-			var auth = new Auth
+			var auth = new Auth(mockApp)
 
 			auth.requiresAuthentication(mockRequest, mockResult)
 		})
@@ -101,7 +105,7 @@ describe ('auth', function () {
 				}
 			}
 
-			var auth = new Auth
+			var auth = new Auth(mockApp)
 
 			auth.requiresAuthentication(mockRequest, mockResult)
 		})
@@ -124,7 +128,7 @@ describe ('auth', function () {
 				}
 			}
 
-			var auth = new Auth
+			var auth = new Auth(mockApp)
 			auth.requiresAuthentication(mockRequest, {}, mockNext)
 
 			nextInvoked.should.equal(true)
@@ -138,7 +142,7 @@ describe ('auth', function () {
 			'When logging in ' +
 			'Then an error is invoked', function (done) {
 
-			var auth = new Auth
+			var auth = new Auth(mockApp)
 
 			var request = {
 				body: {
@@ -156,7 +160,7 @@ describe ('auth', function () {
 			'When logging in ' +
 			'Then an error is invoked', function (done) {
 
-			var auth = new Auth
+			var auth = new Auth(mockApp)
 
 			var request = {
 				body: {
@@ -174,13 +178,13 @@ describe ('auth', function () {
 			'When logging in ' +
 			'Then a user record is retrieved for the username', function (done) {
 
-			var mockDb = {
+			mockApp.lib.db = {
 				getUser: function(username) {
 					username.should.equal('IDENTITY')
 					done()
 				}
 			}
-			var auth = new Auth(mockDb)
+			var auth = new Auth(mockApp)
 
 			var request = {
 				body: {
@@ -195,12 +199,12 @@ describe ('auth', function () {
 			'When logging in ' +
 			'Then the error is bubbled up', function (done) {
 
-			var mockDb = {
+			mockApp.lib.db = {
 				getUser: function(username, cb) {
 					cb(new Error ('AN ERROR'))
 				}
 			}
-			var auth = new Auth(mockDb)
+			var auth = new Auth(mockApp)
 			var request = {
 				body: {
 					identity: 'IDENTITY',
@@ -219,12 +223,12 @@ describe ('auth', function () {
 			'When logging in ' +
 			'Then a negative response is returned', function (done) {
 
-			var mockDb = {
+			mockApp.lib.db = {
 				getUser: function(username, cb) {
 					cb(null, [])
 				}
 			}
-			var auth = new Auth(mockDb)
+			var auth = new Auth(mockApp)
 
 			var request = {
 				body: {
@@ -244,14 +248,14 @@ describe ('auth', function () {
 			'When logging in ' +
 			'Then a negative response is returned', function (done) {
 
-			var mockDb = {
+			mockApp.lib.db = {
 				getUser: function(username, cb) {
 					cb(null, [{
 						pwHash: bcrypt.hashSync('POTATOES')
 					}])
 				}
 			}
-			var auth = new Auth(mockDb)
+			var auth = new Auth(mockApp)
 
 			var request = {
 				body: {
@@ -276,12 +280,12 @@ describe ('auth', function () {
 				identity: 'IDENTITY',
 				pwHash: bcrypt.hashSync('PASSWORD')
 			}
-			var mockDb = {
+			mockApp.lib.db = {
 				getUser: function(username, cb) {
 					cb(null, [mockUser])
 				}
 			}
-			var auth = new Auth(mockDb)
+			var auth = new Auth(mockApp)
 
 			var request = {
 				body: {
@@ -307,12 +311,12 @@ describe ('auth', function () {
 				identity: 'IDENTITY',
 				pwHash: bcrypt.hashSync('PASSWORD')
 			}
-			var mockDb = {
+			mockApp.lib.db = {
 				getUser: function(username, cb) {
 					cb(null, [mockUser])
 				}
 			}
-			var auth = new Auth(mockDb)
+			var auth = new Auth(mockApp)
 
 			var request = {
 				body: {
