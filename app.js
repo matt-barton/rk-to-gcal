@@ -53,6 +53,33 @@ app.use(session({ secret: 'supersecretsecretything' }))
 // config
 var rkOptions = require('./config/runkeeper.config.json')
 
+// database
+var cradle = require('cradle');
+var dbHost, dbPort, dbOptions, dbDatabase;
+dbOptions = {};
+if (process.env.NODE_ENV === 'production') {
+    dbHost = process.env.PROD_COUCH_HOST;
+    dbPort = process.env.PROD_COUCH_PORT;
+    dbDatabase = process.env.PROD_COUCH_DB;
+    dbOptions.auth = {
+        "username": process.env.PROD_COUCH_USERNAME,
+        "password": process.env.PROD_COUCH_PASSWORD
+    };
+}
+else {
+    dbHost = process.env.DEV_COUCH_HOST;
+    dbPort = process.env.DEV_COUCH_PORT;
+    dbDatabase = process.env.DEV_COUCH_DB;
+    if (process.env.DEV_COUCH_USERNAME != null) {
+        obOptions.auth = {
+            "username": process.env.DEV_COUCH_USERNAME,
+            "password": process.env.DEV_COUCH_PASSWORD
+        };
+    }
+}
+var db = new(cradle.Connection)(dbHost, dbPort, dbOptions)
+    .database(dbDatabase);
+    
 // libraries
 app.lib = {}
 

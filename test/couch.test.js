@@ -9,14 +9,14 @@ describe('getUserByIdentity', function() {
 
 	it ('Given an identity is supplied ' +
 		'When getting a user record by identity ' +
-		'Then the users/all view is queried', function (done) {
+		'Then the users/byIdentity view is queried', function (done) {
 
 		var identity = 'IDENTITY'
 		var mockDb = {
 			view: function(viewName, parameters, cb) {
-				viewName.should.equal('users/all')
+				viewName.should.equal('users/byIdentity')
 				parameters.should.be.type('object')
-				parameters.identity.should.equal('IDENTITY')
+				parameters.key.should.equal('IDENTITY')
 				done()
 			}
 		}
