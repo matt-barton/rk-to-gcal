@@ -2,6 +2,11 @@
 
 var should = require('should')
 var bcrypt = require('bcrypt-nodejs')
+//var bcrypt = {
+//	hashSync: function (thing) {
+//		return thing
+//	}
+//}
 var mockApp = {
 	lib: {
 		db: null
@@ -247,7 +252,7 @@ describe ('auth', function () {
 			'And the password supplied does not match the stored password ' +
 			'When logging in ' +
 			'Then a negative response is returned', function (done) {
-
+			this.timeout(10000)
 			mockApp.lib.db = {
 				getUserByIdentity: function(username, cb) {
 					cb(null, [{
@@ -264,9 +269,13 @@ describe ('auth', function () {
 				}
 			}
 			auth.login(request, function(e, result) {
+				console.log('HERE')
 				should.not.exist(e)
+				console.log('HERE2')
 				result.should.equal(false)
+				console.log('HERE3')
 				done()
+				console.log('HERE4')
 			})
 		})
 
@@ -275,6 +284,7 @@ describe ('auth', function () {
 			'And the password supplied matches the stored password ' +
 			'When logging in ' +
 			'Then the stored user record is returned', function (done) {
+			this.timeout(10000)
 
 			var mockUser = {
 				identity: 'IDENTITY',
@@ -306,6 +316,7 @@ describe ('auth', function () {
 			'And the password supplied matches the stored password ' +
 			'When logging in ' +
 			'Then the stored user record is registered in the request seession', function (done) {
+			this.timeout(10000)
 
 			var mockUser = {
 				identity: 'IDENTITY',
