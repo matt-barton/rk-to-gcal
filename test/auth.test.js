@@ -269,13 +269,9 @@ describe ('auth', function () {
 				}
 			}
 			auth.login(request, function(e, result) {
-				console.log('HERE')
 				should.not.exist(e)
-				console.log('HERE2')
 				result.should.equal(false)
-				console.log('HERE3')
 				done()
-				console.log('HERE4')
 			})
 		})
 
