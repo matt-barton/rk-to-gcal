@@ -414,6 +414,79 @@ describe ('register', function () {
 
 		var routes = require('../../lib/routes')(mockExpressApp)
 	})
+
+	it ('Given the action is not successful ' +
+		'When the user is registered ' +
+		'Then the registration view is displayed with a message', function (done) {
+
+		var mockRequest = {
+			body: {
+				identity: 'IDENTITY',
+				password: 'VALIDPASSWORD',
+				pwRepeat: 'VALIDPASSWORD'
+			}
+		}
+		var mockResponse = {
+			render: function(viewName, data) {
+				viewName.should.equal('register')
+				data.registrationError.should.equal('the message')
+				done()
+			}
+		}
+		var mockAuth = {
+			register: function (request, cb) {
+				cb(null, {
+					success: false,
+					message: 'the message'
+				})
+			}
+		}
+		mockExpressApp.post = function (uri, cb) {
+			if (uri == '/auth/register') {
+				cb (mockRequest, mockResponse)
+			}
+		}
+		mockExpressApp.lib.auth = mockAuth
+
+		var routes = require('../../lib/routes')(mockExpressApp)
+	})
+
+	it ('Given the action is successful ' +
+		'When the user is registered ' +
+		'Then the account view is displayed with a message', function (done) {
+
+		var mockRequest = {
+			body: {
+				identity: 'IDENTITY',
+				password: 'VALIDPASSWORD',
+				pwRepeat: 'VALIDPASSWORD'
+			}
+		}
+		var mockResponse = {
+			render: function(viewName, data) {
+				viewName.should.equal('account')
+				data.message.should.equal('the message')
+				done()
+			}
+		}
+		var mockAuth = {
+			register: function (request, cb) {
+				cb(null, {
+					success: true,
+					message: 'the message'
+				})
+			}
+		}
+		mockExpressApp.post = function (uri, cb) {
+			if (uri == '/auth/register') {
+				cb (mockRequest, mockResponse)
+			}
+		}
+		mockExpressApp.lib.auth = mockAuth
+
+		var routes = require('../../lib/routes')(mockExpressApp)
+	})
+
 })
 })
 })
