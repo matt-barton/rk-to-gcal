@@ -2,19 +2,24 @@
 
 var should = require('should')
 var bcrypt = require('bcrypt-nodejs')
-//var bcrypt = {
-//	hashSync: function (thing) {
-//		return thing
-//	}
-//}
-var mockApp = {
-	lib: {
-		db: null
-	}
-}
+var utils = require('../lib/utils')
+var mockApp
+
 describe ('auth', function () {
 
 	var Auth = require('../lib/auth')
+
+	beforeEach(function() {
+		mockApp = {
+			lib: {
+				db: null,
+				utils: utils,
+				emailer: {
+					sendIdentityConfirmation: function () {}
+				}
+			}
+		}
+	})
 
 	describe ('requiresAuthentication', function () {
 
@@ -338,6 +343,310 @@ describe ('auth', function () {
 				request.session.user.should.equal(mockUser)
 				done()
 			})
+		})
+	})
+
+	describe ('register', function() {
+
+		it ('Given no identity is supplied ' +
+			'When a user is registered ' +
+			'Then failure is returned with a message', function (done) {
+
+			var request = {
+				body: {}
+			}
+			var auth = new Auth(mockApp)
+
+			auth.register(request, function(e, result) {
+				should.not.exist(e)
+				result.success.should.equal(false)
+				result.message.should.equal('Username is required')
+				done()
+			})		
+		})
+
+		it ('Given a null identity is supplied ' +
+			'When a user is registered ' +
+			'Then failure is returned with a message', function (done) {
+
+			var request = {
+				body: {
+					identity: null
+				}
+			}
+			var auth = new Auth(mockApp)
+
+			auth.register(request, function(e, result) {
+				should.not.exist(e)
+				result.success.should.equal(false)
+				result.message.should.equal('Username is required')
+				done()
+			})		
+		})
+
+		it ('Given an identity containing only whitespace is supplied ' +
+			'When a user is registered ' +
+			'Then failure is returned with a message', function (done) {
+
+			var request = {
+				body: {
+					identity: '     '
+				}
+			}
+			var auth = new Auth(mockApp)
+
+			auth.register(request, function(e, result) {
+				should.not.exist(e)
+				result.success.should.equal(false)
+				result.message.should.equal('Username is required')
+				done()
+			})		
+		})
+
+
+		it ('Given an no password is supplied ' +
+			'When a user is registered ' +
+			'Then failure is returned with a message', function (done) {
+
+			var request = {
+				body: {
+					identity: 'IDENTITY'
+				}
+			}
+			var auth = new Auth(mockApp)
+
+			auth.register(request, function(e, result) {
+				should.not.exist(e)
+				result.success.should.equal(false)
+				result.message.should.equal('Password is required')
+				done()
+			})		
+		})
+
+		it ('Given an identity and password ' +
+			'When a user is registered ' +
+			'Then the identity is checked for uniqueness', function (done) {
+
+			var request = {
+				body: {
+					identity: 'IDENTITY',
+					password: 'PASSWORD'
+				}
+			}
+
+			mockApp.lib.db = {
+				getUserByIdentity: function(username) {
+					username.should.equal('IDENTITY')
+					done()
+				}
+			}
+			var auth = new Auth(mockApp)
+
+			auth.register(request)		
+		})
+
+		it ('Given an error is thrown ' +
+			'When a identity uniqueness is being checked ' +
+			'Then the error is passed on', function (done) {
+
+			var error = new Error ('This is the error')
+			var request = {
+				body: {
+					identity: 'IDENTITY',
+					password: 'PASSWORD'
+				}
+			}
+
+			mockApp.lib.db = {
+				getUserByIdentity: function(username, cb) {
+					cb(error)
+				}
+			}
+			var auth = new Auth(mockApp)
+
+			auth.register(request, function(e) {
+				e.should.equal(error)
+				done()
+			})		
+		})
+
+		it ('Given the suplied identity is already known in the database ' +
+			'When registering ' +
+			'Then failure is returned with a message', function (done) {
+
+			var request = {
+				body: {
+					identity: 'IDENTITY',
+					password: 'PASSWORD'
+				}
+			}
+
+			mockApp.lib.db = {
+				getUserByIdentity: function(username, cb) {
+					cb(null, [{
+						identity: 'IDENTITY'
+					}])
+				}
+			}
+			var auth = new Auth(mockApp)
+
+			auth.register(request, function(e, result) {
+				should.not.exist(e)
+				result.success.should.equal(false)
+				result.message.should.equal('That email address is already registered')
+				done()
+			})		
+		})
+	
+		it ('Given the suplied inputs are ok ' +
+			'When registering ' +
+			'Then a user record is created in the database', function (done) {
+
+			var request = {
+				body: {
+					identity: 'IDENTITY',
+					password: 'PASSWORD'
+				}
+			}
+
+			mockApp.lib.db = {
+				getUserByIdentity: function(username, cb) {
+					cb(null, [])
+				},
+				createUser:(function(identity, password){
+					identity.should.equal('IDENTITY')
+					password.should.equal('PASSWORD')
+					done()
+				})
+			}
+			var auth = new Auth(mockApp)
+
+			auth.register(request)		
+		})
+
+		it ('Given an error is thrown ' +
+			'When creating a user record ' +
+			'Then the error is correctly handled', function (done) {
+
+			var error = new Error ('This is an error')
+			var request = {
+				body: {
+					identity: 'IDENTITY',
+					password: 'PASSWORD'
+				}
+			}
+
+			mockApp.lib.db = {
+				getUserByIdentity: function(username, cb) {
+					cb(null, [])
+				},
+				createUser:(function(identity, password, cb){
+					cb(error)
+				})
+			}
+			var auth = new Auth(mockApp)
+
+			auth.register(request, function(e) {
+				e.should.equal(error)
+				done()
+			})
+		})
+
+		it ('Given a user record is created ' +
+			'When registering ' +
+			'Then the session is updated to record a login', function (done) {
+
+			var mockUserRecord = {
+				identity: 'IDENTITY'
+			}
+			var request = {
+				body: {
+					identity: 'IDENTITY',
+					password: 'PASSWORD'
+				},
+				session: {}
+			}
+
+			mockApp.lib.db = {
+				getUserByIdentity: function(username, cb) {
+					cb(null, [])
+				},
+				createUser:(function(identity, password, cb){
+					cb(null, mockUserRecord)
+				})
+			}
+
+			var auth = new Auth(mockApp)
+
+			auth.register(request, function (e) {
+				should.not.exist(e)
+				request.session.user.should.equal(mockUserRecord)
+				done()
+			})		
+		})
+
+		it ('Given a user record is created ' +
+			'When registering ' +
+			'Then an identity confirmation email is requested', function (done) {
+
+			var mockUserRecord = {
+				identity: 'IDENTITY'
+			}
+			var request = {
+				body: {
+					identity: 'IDENTITY',
+					password: 'PASSWORD'
+				},
+				session: {}
+			}
+
+			mockApp.lib.db = {
+				getUserByIdentity: function(username, cb) {
+					cb(null, [])
+				},
+				createUser:(function(identity, password, cb){
+					cb(null, mockUserRecord)
+				})
+			}
+			mockApp.lib.emailer = {
+				sendIdentityConfirmation: function(user) {
+					user.should.equal(mockUserRecord)
+					done()
+				}
+			}
+			var auth = new Auth(mockApp)
+
+			auth.register(request, function() {})		
+		})
+
+		it ('Given a user record is created ' +
+			'When registering ' +
+			'Then success is returned', function (done) {
+
+			var request = {
+				body: {
+					identity: 'IDENTITY',
+					password: 'PASSWORD'
+				},
+				session: {}
+			}
+
+			mockApp.lib.db = {
+				getUserByIdentity: function(username, cb) {
+					cb(null, [])
+				},
+				createUser:(function(identity, password, cb){
+					cb(null, {})
+				})
+			}
+
+			var auth = new Auth(mockApp)
+
+			auth.register(request, function (e, result) {
+				should.not.exist(e)
+				result.success.should.equal(true)
+				done()
+			})		
 		})
 	})
 })

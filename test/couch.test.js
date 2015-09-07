@@ -61,7 +61,7 @@ describe('getUserByIdentity', function() {
 
 	it ('Given a matching user is found ' +
 		'When getting a user record by identity ' +
-		'Then the user object is passed to the callback', function (done) {
+		'Then the user object is passed to the callback in an array', function (done) {
 
 		var mockDb = {
 			view: function(viewName, parameters, cb) {
@@ -73,7 +73,7 @@ describe('getUserByIdentity', function() {
 		var couch = new Couch(mockDb)
 		couch.getUserByIdentity(null, function(e, result) {
 			should.not.exist(e)
-			result.identity.should.equal('IDENTITY')
+			result[0].identity.should.equal('IDENTITY')
 			done()
 		})
 	})
