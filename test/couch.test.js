@@ -67,7 +67,9 @@ describe('getUserByIdentity', function() {
 		var mockDb = {
 			view: function(viewName, parameters, cb) {
 				cb(null, [{
-					identity: 'IDENTITY'
+					value: {
+						identity: 'IDENTITY'
+					}
 				}])
 			}
 		}
@@ -87,9 +89,13 @@ describe('getUserByIdentity', function() {
 		var mockDb = {
 			view: function(identity, parameters, cb) {
 				cb(null, [{
-					identity: 'IDENTITY'
+					value: {
+						identity: 'IDENTITY'
+					}
 				},{
-					identity: 'IDENTITY'
+					value: {
+						identity: 'IDENTITY'
+					}
 				}])
 			}
 		}
