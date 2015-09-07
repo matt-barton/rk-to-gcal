@@ -79,14 +79,14 @@ else {
 }
 var db = new(cradle.Connection)(dbHost, dbPort, dbOptions)
     .database(dbDatabase);
-    
+
 // libraries
 app.lib = {}
 
 var Runkeeper = require('./lib/runkeeper')
 var Auth = require('./lib/auth')
 var Couch  = require('./lib/couch')
-var couchDb = new Couch
+var couchDb = new Couch(db)
 
 app.lib.db = couchDb
 app.lib.utils = require('./lib/utils')
