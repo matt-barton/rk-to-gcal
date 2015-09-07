@@ -117,7 +117,18 @@ describe('validString', function() {
 		result.should.equal(true)
 		done()		
 	})
+})
 
+describe('UTCNow', function () {
 
+	it ('When a UTC formatted timestamp is requested ' +
+		'Then a correctly formatted string is returned', function (done) {
+
+		var result = utils.UTCNow()
+		var regex = new RegExp(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/)
+		var success = regex.test(result)
+		success.should.equal(true)
+		done()
+	})
 })
 })

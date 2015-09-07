@@ -2,6 +2,7 @@
 
 var should = require('should')
 var Couch = require('../lib/couch')
+var bcrypt = require('bcrypt-nodejs')
 
 describe('couch', function () {
 
@@ -95,6 +96,65 @@ describe('getUserByIdentity', function() {
 		var couch = new Couch(mockDb)
 		couch.getUserByIdentity('IDENTITY', function(e, result) {
 			e.message.should.equal("Database integrity error: multiple user records with identity = IDENTITY")
+			done()
+		})
+	})
+
+})
+
+describe('createUser', function () {
+
+	it ('Given user details ' +
+		'When creating a user record ' +
+		'Then the appropriate type of record is created', function (done) {
+
+		var mockDb = {
+			save: function (record) {
+				record.identity.should.equal('IDENTITY')
+				bcrypt.compareSync('PASSWORD', record.pwHash).should.equal(true)
+				record.type.should.equal('user')
+				record.identityConfirmed.should.equal(false)
+				record.createdDate.should.exist
+				done()
+			}
+		}
+		var couch = new Couch(mockDb)
+		couch.createUser('IDENTITY', 'PASSWORD')
+	})
+
+	it ('Given an error is thrown ' +
+		'When creating a user record ' +
+		'Then the error is handled correctly', function (done) {
+
+		var error = new Error ('This is an error')
+		var mockDb = {
+			save: function (record, cb) {
+				cb(error)
+			}
+		}
+		var couch = new Couch(mockDb)
+		couch.createUser('IDENTITY', 'PASSWORD', function(e) {
+			e.should.equal(error)
+			done()
+		})
+	})
+
+	it ('Given a record is successfully created ' +
+		'When creating a user record ' +
+		'Then the new record is returned', function (done) {
+
+		var mockUser = {
+			someProperty: 'some value'
+		}
+		var mockDb = {
+			save: function (record, cb) {
+				cb(null, mockUser)
+			}
+		}
+		var couch = new Couch(mockDb)
+		couch.createUser('IDENTITY', 'PASSWORD', function(e, result) {
+			should.not.exist(e)
+			result.should.equal(mockUser)
 			done()
 		})
 	})
