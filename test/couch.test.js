@@ -116,7 +116,6 @@ describe('createUser', function () {
 
 		var mockDb = {
 			save: function (record) {
-				console.log(record)
 				record.identity.should.equal('IDENTITY')
 				bcrypt.compareSync('PASSWORD', record.pwHash).should.equal(true)
 				record.type.should.equal('user')
