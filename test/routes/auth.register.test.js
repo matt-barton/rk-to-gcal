@@ -3,45 +3,7 @@
 var should = require ('should')
 var mockExpressApp
 var utils = require('../../lib/utils')
-
-function assertHandlerExists (done, path, method, useMiddleware, useAuthMiddleware) {
-
-	var correctUri = false
-	var mockFn = function mockFn () {
-		var who = 'i am the mock authentication middleware'
-	}
-	var mockAuth = {
-		requiresAuthentication: mockFn
-	}
-	mockExpressApp.post = function (uri, fn) {
-		if (uri == path) {
-			if (method == 'POST') correctUri = true
-		}
-	}
-	mockExpressApp.get = function (uri, fn1, fn2) {
-
-		if (uri == path) {
-			if (method == 'GET') correctUri = true
-			var fn1Type = typeof fn1
-			var fn2Type = typeof fn2
-
-			fn1Type.should.equal('function')
-			fn2Type.should.equal(useMiddleware 
-				? 'function' 
-				: 'undefined')
-
-			if (useAuthMiddleware) {
-				fn1.should.equal(mockFn)
-			}
-
-			done()
-		}
-	}
-	mockExpressApp.lib.auth = mockAuth
-
-	var routes = require('../../lib/routes')(mockExpressApp)
-	correctUri.should.equal(true)
-}
+var helpers = require('../helpers')
 
 describe('routes', function () {
 
@@ -64,7 +26,7 @@ describe ('register', function () {
 	it('When routes are set up ' +
 		'Then a GET handler is set up for /auth/register', function (done) {
 
-		assertHandlerExists(done, '/auth/register', 'GET')
+		helpers.assertHandlerExists(done, '/auth/register', 'GET')
 	})
 
 	it('When the GET /auth/register routes is requested ' +
@@ -89,7 +51,7 @@ describe ('register', function () {
 	it('When routes are set up ' +
 		'Then a POST handler is set up for /auth/register', function (done) {
 
-		assertHandlerExists(done, '/auth/register', 'POST')
+		helpers.assertHandlerExists(done, '/auth/register', 'POST')
 	})
 
 
