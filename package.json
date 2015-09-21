@@ -10,8 +10,10 @@
     "express": "4.0.x",
     "express-handlebars": "2.0.x",
     "express-session": "~1.0.0",
+    "extend": "^3.0.0",
     "method-override": "~1.0.0",
     "morgan": "~1.0.0",
+    "node-uuid": "^1.4.3",
     "nodemailer": "^1.4.0",
     "nodemailer-smtp-transport": "^1.0.3",
     "runkeeper-js": "1.0.0"

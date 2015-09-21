@@ -116,11 +116,14 @@ describe('createUser', function () {
 
 		var mockDb = {
 			save: function (record) {
+				console.log(record)
 				record.identity.should.equal('IDENTITY')
 				bcrypt.compareSync('PASSWORD', record.pwHash).should.equal(true)
 				record.type.should.equal('user')
 				record.identityConfirmed.should.equal(false)
-				record.createdDate.should.exist
+				var dateTest = /^[\d]{4}-[\d]{2}-[\d]{2} [\d]{2}:[\d]{2}:[\d]{2}$/
+				dateTest.test(record.createdDate).should.equal(true)
+				record.confirmationCode.length.should.equal(32)
 				done()
 			}
 		}
@@ -149,18 +152,17 @@ describe('createUser', function () {
 		'When creating a user record ' +
 		'Then the new record is returned', function (done) {
 
-		var mockUser = {
-			someProperty: 'some value'
-		}
 		var mockDb = {
 			save: function (record, cb) {
-				cb(null, mockUser)
+				cb(null, {
+					id: 'new record id'
+				})
 			}
 		}
 		var couch = new Couch(mockDb)
 		couch.createUser('IDENTITY', 'PASSWORD', function(e, result) {
 			should.not.exist(e)
-			result.should.equal(mockUser)
+			result.id.should.equal('new record id')
 			done()
 		})
 	})

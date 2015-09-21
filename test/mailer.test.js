@@ -9,6 +9,25 @@ describe('mailer', function() {
 var mockSmtpTransport
 var mockNodeMailer 
 var mockFs
+var mockRecipient
+var mockTransport
+var protectProcessEnv
+
+before (function () {
+	protectProcessEnv = {
+		RK2GCAL_SMTP_HOST: process.env.RK2GCAL_SMTP_HOST,
+		RK2GCAL_SMTP_PORT: process.env.RK2GCAL_SMTP_PORT,
+		RK2GCAL_EMAIL_ADDRESS: process.env.RK2GCAL_EMAIL_ADDRESS,
+		RK2GCAL_SMTP_PW: process.env.RK2GCAL_SMTP_PW
+	}
+})
+
+after (function () {
+	process.env.RK2GCAL_SMTP_HOST = protectProcessEnv.RK2GCAL_SMTP_HOST
+	process.env.RK2GCAL_SMTP_PORT = protectProcessEnv.RK2GCAL_SMTP_PORT
+	process.env.RK2GCAL_EMAIL_ADDRESS = protectProcessEnv.RK2GCAL_EMAIL_ADDRESS
+	process.env.RK2GCAL_SMTP_PW = protectProcessEnv.RK2GCAL_SMTP_PW
+})
 
 beforeEach (function () {
 	process.env.RK2GCAL_SMTP_HOST = 'the host'
@@ -17,13 +36,23 @@ beforeEach (function () {
 	process.env.RK2GCAL_SMTP_PW = 'the password'
 
 	mockSmtpTransport = function () {}
+	mockTransport = {
+		sendMail: function () {}
+	}
 	mockNodeMailer = {
-		createTransport: function () {}
+		createTransport: function () {
+			return mockTransport
+		}
 	}
 	mockFs = {
-		readFileSync: function () {}
+		readFileSync: function () {
+			return ''
+		}
 	}
-
+	mockRecipient = {
+		identity: 'IDENTITY',
+		confirmationCode: 'CONFIRMATION CODE'
+	}
 })
 
 describe('sendIdentityConfirmation', function() {
@@ -37,18 +66,16 @@ describe('sendIdentityConfirmation', function() {
 			options.port.should.equal('the port')
 			options.auth.user.should.equal('the email address')
 			options.auth.pass.should.equal('the password')
-			return 'woof'
+			return mockTransport
 		}
 
-		mockNodeMailer = {
-			createTransport: function (transport) {
-				transport.should.equal('woof')
-				done()
-			}
+		mockNodeMailer.createTransport = function (transport) {
+			done()
+			return mockTransport
 		}
 		var mailer = new Mailer(mockNodeMailer, mockSmtpTransport, mockFs)
 
-		mailer.sendIdentityConfirmation(function(){})
+		mailer.sendIdentityConfirmation(mockRecipient, null, function(){})
 	})
 
 	it ('Given no transport is set up ' +
@@ -56,16 +83,14 @@ describe('sendIdentityConfirmation', function() {
 		'Then a transport is set up only once', function (done) {
 
 		var called = 0
-		var mockNodeMailer = {
-			createTransport: function () {
-				called++
-				return 1
-			}
+		mockNodeMailer.createTransport = function () {
+			called++
+			return mockTransport
 		}
 		var mailer = new Mailer(mockNodeMailer, mockSmtpTransport, mockFs)
 
-		mailer.sendIdentityConfirmation(function() {})
-		mailer.sendIdentityConfirmation(function() {
+		mailer.sendIdentityConfirmation(mockRecipient, null, function() {})
+		mailer.sendIdentityConfirmation(mockRecipient, null, function() {
 			called.should.equal(1)
 			done()
 		})
@@ -78,16 +103,40 @@ describe('sendIdentityConfirmation', function() {
 		var mockFs = {
 			readFileSync: function (filename, options) {
 				filename.should.equal('email-templates/identityConfirmation.tmpl')
-				options.encoding.should.equal('utf8')
+				options.encoding.should.equal('utf-8')
 				done()
+				return ''
 			}
 		}
 		var mailer = new Mailer(mockNodeMailer, mockSmtpTransport, mockFs)
 
-		mailer.sendIdentityConfirmation(function() {})
+		mailer.sendIdentityConfirmation(mockRecipient, null, function() {})
 	})
 
-	// sends an email to the recipient
+	it ('Given a transport is set up ' +
+		'When an identity confirmation email is requested ' +
+		'Then an email is sent via the transport', function (done) {
 
+		mockFs.readFileSync = function () {
+			return 'email content {{url}}'
+		}
+		mockNodeMailer.createTransport = function (transport) {
+			return {
+				sendMail: function (options) {
+					options.from.should.equal('the email address')
+					options.to.should.equal('IDENTITY')
+					options.subject.should.equal('Activate your account')
+					options.text.should.equal('email content http://rk2gcal/auth/activate?x=CONFIRMATION CODE')
+					done()
+				}
+			}
+		}
+		var recipient = {
+			identity: 'IDENTITY',
+			confirmationCode: 'CONFIRMATION CODE'
+		}
+		var mailer = new Mailer(mockNodeMailer, mockSmtpTransport, mockFs)
+		mailer.sendIdentityConfirmation(recipient, 'rk2gcal', function() {})
+	})
 })
 })

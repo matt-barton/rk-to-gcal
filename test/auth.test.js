@@ -564,7 +564,10 @@ describe ('auth', function () {
 					identity: 'IDENTITY',
 					password: 'PASSWORD'
 				},
-				session: {}
+				session: {},
+				headers: {
+					host: null
+				}
 			}
 
 			mockApp.lib.db = {
@@ -597,7 +600,10 @@ describe ('auth', function () {
 					identity: 'IDENTITY',
 					password: 'PASSWORD'
 				},
-				session: {}
+				session: {},
+				headers: {
+					host: 'the host'
+				}
 			}
 
 			mockApp.lib.db = {
@@ -609,8 +615,9 @@ describe ('auth', function () {
 				})
 			}
 			mockApp.lib.emailer = {
-				sendIdentityConfirmation: function(user) {
+				sendIdentityConfirmation: function(user, host) {
 					user.should.equal(mockUserRecord)
+					host.should.equal('the host')
 					done()
 				}
 			}
@@ -628,7 +635,10 @@ describe ('auth', function () {
 					identity: 'IDENTITY',
 					password: 'PASSWORD'
 				},
-				session: {}
+				session: {},
+				headers: {
+					host: null
+				}
 			}
 
 			mockApp.lib.db = {
