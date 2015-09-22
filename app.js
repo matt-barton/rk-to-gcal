@@ -49,6 +49,10 @@ app.use(cookieParser())
 app.use(bodyParser())
 app.set('view engine', 'handlebars')
 app.use(session({ secret: 'supersecretsecretything' }))
+app.use(function(req, res, next) {
+    res.locals.session = req.session;
+    next()
+});
 
 // config
 var rkOptions = require('./config/runkeeper.config.json')
