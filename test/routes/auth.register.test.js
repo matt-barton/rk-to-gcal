@@ -415,7 +415,7 @@ describe ('register', function () {
 
 	it ('Given the action is successful ' +
 		'When the user is registered ' +
-		'Then the account view is displayed with a message', function (done) {
+		'Then the index view is displayed with a message', function (done) {
 
 		var mockRequest = {
 			body: {
@@ -426,7 +426,7 @@ describe ('register', function () {
 		}
 		var mockResponse = {
 			render: function(viewName, data) {
-				viewName.should.equal('account')
+				viewName.should.equal('index')
 				data.message.should.equal('the message')
 				done()
 			}

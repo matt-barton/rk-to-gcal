@@ -2,6 +2,38 @@
 
     <h1>Your Node Express App</h1>
 
-    <a href="/auth/runkeeper">Connect with Runkeeper</a>
-    
+	{{#if session.user}}
+    Welcome {{session.user.identity}}
+		{{#if session.user.identityConfirmed}}
+		<div>
+			<ul>
+				<li>
+			    	<a href="/auth/runkeeper">Connect with Runkeeper</a>
+				</li>
+				<li>
+					<a href="/auth/logout">Sign Out</a>
+				</li>
+			</ul>
+		</div>
+		{{else}}
+		<div>
+			<form action="/auth/activate" method="POST">
+				<input type="text" name="activationCode" />
+				<input type="submit" value="Go" />
+			</form>
+		</div>
+		<div>
+			<a href="/auth/resendActivationEmail">Resend activation email<a>
+		</div>
+		{{/if}}
+	{{else}}
+	<ul>
+    	<li>
+		    <a href="/auth/login">Sign In</a>
+		</li>
+    	<li>
+		    <a href="/auth/register">Register</a>
+		</li>
+	</ul>    
+	{{/if}}
 </div>

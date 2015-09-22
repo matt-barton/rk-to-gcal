@@ -122,7 +122,7 @@ describe('createUser', function () {
 				record.identityConfirmed.should.equal(false)
 				var dateTest = /^[\d]{4}-[\d]{2}-[\d]{2} [\d]{2}:[\d]{2}:[\d]{2}$/
 				dateTest.test(record.createdDate).should.equal(true)
-				record.confirmationCode.length.should.equal(32)
+				record.activationCode.length.should.equal(32)
 				done()
 			}
 		}

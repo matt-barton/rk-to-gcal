@@ -139,7 +139,7 @@ describe ('login', function () {
 
 	it ('Given the posted identity and password are valid ' +
 		'When the /auth/login route is posted to ' +
-		'Then the account view is rendered', function (done) {
+		'Then the index view is rendered', function (done) {
 
 		var mockRequest = {
 			body: {
@@ -149,7 +149,7 @@ describe ('login', function () {
 		}
 		var mockResponse = {
 			render: function (viewName) {
-				viewName.should.equal('account')
+				viewName.should.equal('index')
 				done()
 			}
 		}
