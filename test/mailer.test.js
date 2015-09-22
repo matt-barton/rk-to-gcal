@@ -118,7 +118,7 @@ describe('sendIdentityConfirmation', function() {
 		'Then an email is sent via the transport', function (done) {
 
 		mockFs.readFileSync = function () {
-			return 'email content {{url}}'
+			return 'email content {{url}} {{code}}'
 		}
 		mockNodeMailer.createTransport = function (transport) {
 			return {
@@ -126,7 +126,7 @@ describe('sendIdentityConfirmation', function() {
 					options.from.should.equal('the email address')
 					options.to.should.equal('IDENTITY')
 					options.subject.should.equal('Activate your account')
-					options.text.should.equal('email content http://rk2gcal/auth/activate?x=CONFIRMATION CODE')
+					options.text.should.equal('email content http://rk2gcal/auth/activate?x=CONFIRMATION CODE CONFIRMATION CODE')
 					done()
 				}
 			}
