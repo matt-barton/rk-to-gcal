@@ -167,4 +167,132 @@ describe('createUser', function () {
 	})
 
 })
+
+describe('activateUser', function() {
+
+	it ('Given no user identity is supplied ' +
+		'When a user is activated ' +
+		'Then an error is passed to the callback', function(done) {
+
+		var couch = new Couch({})
+		couch.activateUser(null, function(e) {
+			e.should.be.type('object')
+			e.message.should.equal('No identity supplied')
+			done()
+		})		
+	})
+
+	it ('Given a user identity is supplied ' +
+		'When a user is activated ' +
+		'Then the user\'s record is obtained', function(done) {
+
+		var mockDb = {
+			view: function(viewName, parameters, cb) {
+				viewName.should.equal('users/byIdentity')
+				parameters.should.be.type('object')
+				parameters.key.should.equal('IDENTITY')
+				done()
+			}
+		}
+		var couch = new Couch(mockDb)
+		couch.activateUser('IDENTITY', function() {})		
+	})
+
+	it ('Given an error occurs ' +
+		'When getting a user record ' +
+		'Then the error is passed to the callback', function(done) {
+
+		var error = new Error ('AN ERROR')
+		var mockDb = {
+			view: function(viewName, parameters, cb) {
+				cb(error)
+			}
+		}
+		var couch = new Couch(mockDb)
+		couch.activateUser('IDENTITY', function(e) {
+			e.should.equal(error)
+			done()
+		})		
+	})
+
+	it ('Given the user\'s record is obtained ' +
+		'When a user is activated ' +
+		'Then the user\'s record is saved, with the active flag set true', function(done) {
+
+		var mockUser = {
+			identity: 'IDENTITY',
+			identityConfirmed: false
+		}
+		var mockDb = {
+			view: function(viewName, parameters, cb) {
+				cb(null, [{
+					value: mockUser
+				}])
+			},
+			save: function(user) {
+				user.identity.should.equal('IDENTITY')
+				user.identityConfirmed.should.equal(true)
+				var dateTest = /^[\d]{4}-[\d]{2}-[\d]{2} [\d]{2}:[\d]{2}:[\d]{2}$/
+				dateTest.test(user.activatedDate).should.equal(true)
+				done()
+			}
+		}
+		var couch = new Couch(mockDb)
+		couch.activateUser('IDENTITY', function() {})		
+	})
+
+	it ('Given an error occurs ' +
+		'When saving the user\'s record ' +
+		'Then the error is passed to the callback', function(done) {
+
+		var error = new Error ('AN ERROR')
+		var mockUser = {
+			identity: 'IDENTITY',
+			identityConfirmed: false
+		}
+		var mockDb = {
+			view: function(viewName, parameters, cb) {
+				cb(null, [{
+					value: mockUser
+				}])
+			},
+			save: function(user, cb) {
+				cb(error)
+			}
+		}
+		var couch = new Couch(mockDb)
+		couch.activateUser('IDENTITY', function(e) {
+			e.should.exist
+			e.message.should.equal('AN ERROR')
+			done()
+		})		
+	})
+
+	it ('Given the user\'s record is saved successfully ' +
+		'When activating the user\'s record ' +
+		'Then a success flag is passed to the callback', function(done) {
+
+		var mockUser = {
+			identity: 'IDENTITY',
+			identityConfirmed: false
+		}
+		var mockDb = {
+			view: function(viewName, parameters, cb) {
+				cb(null, [{
+					value: mockUser
+				}])
+			},
+			save: function(user, cb) {
+				cb()
+			}
+		}
+		var couch = new Couch(mockDb)
+		couch.activateUser('IDENTITY', function(e, result) {
+			should.not.exist(e)
+			result.should.exist
+			result.success.should.equal(true)
+			done()
+		})		
+	})
+})
 })
