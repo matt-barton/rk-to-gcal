@@ -51,7 +51,7 @@ beforeEach (function () {
 	}
 	mockRecipient = {
 		identity: 'IDENTITY',
-		confirmationCode: 'CONFIRMATION CODE'
+		activationCode: 'CONFIRMATION CODE'
 	}
 })
 
@@ -133,7 +133,7 @@ describe('sendIdentityConfirmation', function() {
 		}
 		var recipient = {
 			identity: 'IDENTITY',
-			confirmationCode: 'CONFIRMATION CODE'
+			activationCode: 'CONFIRMATION CODE'
 		}
 		var mailer = new Mailer(mockNodeMailer, mockSmtpTransport, mockFs)
 		mailer.sendIdentityConfirmation(recipient, 'rk2gcal', function() {})
