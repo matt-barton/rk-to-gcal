@@ -659,4 +659,27 @@ describe ('auth', function () {
 			})		
 		})
 	})
+
+	describe('logout', function () {
+
+		it ('Given user information is present in the session ' +
+			'When logging out ' +
+			'Then the user information is removed from the session', function (done) {
+
+			var request = {
+				session: {
+					user: {
+						identity: 'IDENTITY'
+					}
+				}
+			}
+
+			var auth = new Auth(mockApp)
+
+			auth.logout(request, function() {
+				should.not.exist(request.session.user)
+				done()
+			})
+		})
+	})
 })
