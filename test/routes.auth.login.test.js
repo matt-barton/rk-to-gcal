@@ -2,8 +2,8 @@
 
 var should = require ('should')
 var mockExpressApp
-var utils = require('../../lib/utils')
-var helpers = require('../helpers')
+var utils = require('../lib/utils')
+var helpers = require('./helpers')
 
 describe('routes', function () {
 
@@ -45,7 +45,7 @@ describe ('login', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it('When routes are set up ' +
@@ -78,7 +78,7 @@ describe ('login', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the request data contains an identity field ' +
@@ -107,7 +107,7 @@ describe ('login', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the request data contains an identity and a password ' +
@@ -134,7 +134,7 @@ describe ('login', function () {
 		}
 		mockExpressApp.lib.auth = mockAuth
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the posted identity and password are valid ' +
@@ -165,7 +165,7 @@ describe ('login', function () {
 		}
 		mockExpressApp.lib.auth = mockAuth
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the posted identity and password are not valid ' +
@@ -198,7 +198,7 @@ describe ('login', function () {
 		}
 		mockExpressApp.lib.auth = mockAuth
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 
@@ -229,7 +229,7 @@ describe ('login', function () {
 		}
 		mockExpressApp.lib.auth = mockAuth
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 })

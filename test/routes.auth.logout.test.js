@@ -2,8 +2,8 @@
 
 var should = require ('should')
 var mockExpressApp
-var utils = require('../../lib/utils')
-var helpers = require('../helpers')
+var utils = require('../lib/utils')
+var helpers = require('./helpers')
 
 beforeEach(function() {
 	mockExpressApp = {
@@ -55,7 +55,7 @@ describe ('logout', function () {
 			}
 		}
 
-		require('../../lib/routes')(mockExpressApp)
+		require('../lib/routes')(mockExpressApp)
 		called.should.equal(false)
 	})
 
@@ -88,7 +88,7 @@ describe ('logout', function () {
 				cb()
 			}
 		}
-		require('../../lib/routes')(mockExpressApp)
+		require('../lib/routes')(mockExpressApp)
 	})
 
 	it('Given the user is logged in ' +
@@ -121,7 +121,7 @@ describe ('logout', function () {
 			}
 		}
 
-		require('../../lib/routes')(mockExpressApp)
+		require('../lib/routes')(mockExpressApp)
 	})
 
 })

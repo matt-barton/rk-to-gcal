@@ -2,8 +2,8 @@
 
 var should = require ('should')
 var mockExpressApp
-var utils = require('../../lib/utils')
-var helpers = require('../helpers')
+var utils = require('../lib/utils')
+var helpers = require('./helpers')
 
 describe('routes', function () {
 
@@ -45,7 +45,7 @@ describe ('register', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it('When routes are set up ' +
@@ -78,7 +78,7 @@ describe ('register', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the request data does not contain a password field ' +
@@ -106,7 +106,7 @@ describe ('register', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the request data does not contain a password repeat field ' +
@@ -135,7 +135,7 @@ describe ('register', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the request data contains only whitespace in the identity field ' +
@@ -163,7 +163,7 @@ describe ('register', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the request data contains only whitespace in the password field ' +
@@ -192,7 +192,7 @@ describe ('register', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 
@@ -223,7 +223,7 @@ describe ('register', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the supplied password and repeat fields do not match ' +
@@ -253,7 +253,7 @@ describe ('register', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the supplied password and repeat fields do match ' +
@@ -284,7 +284,7 @@ describe ('register', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the supplied password and repeat fields do match ' +
@@ -315,7 +315,7 @@ describe ('register', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the supplied password and repeat fields match ' +
@@ -343,7 +343,7 @@ describe ('register', function () {
 		}
 		mockExpressApp.lib.auth = mockAuth
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given an error is thrown ' +
@@ -374,7 +374,7 @@ describe ('register', function () {
 		}
 		mockExpressApp.lib.auth = mockAuth
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the action is not successful ' +
@@ -410,7 +410,7 @@ describe ('register', function () {
 		}
 		mockExpressApp.lib.auth = mockAuth
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the action is successful ' +
@@ -446,7 +446,7 @@ describe ('register', function () {
 		}
 		mockExpressApp.lib.auth = mockAuth
 
-		var routes = require('../../lib/routes')(mockExpressApp)
+		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
 })

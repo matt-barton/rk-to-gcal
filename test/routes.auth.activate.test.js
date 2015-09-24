@@ -2,8 +2,8 @@
 
 var should = require ('should')
 var mockExpressApp
-var utils = require('../../lib/utils')
-var helpers = require('../helpers')
+var utils = require('../lib/utils')
+var helpers = require('./helpers')
 
 describe('routes', function () {
 
@@ -58,7 +58,7 @@ describe ('activate', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)			
+		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
 	it('Given an activation code is supplied ' +
@@ -90,7 +90,7 @@ describe ('activate', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)			
+		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
 	it('Given an activation code is supplied ' +
@@ -124,7 +124,7 @@ describe ('activate', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)			
+		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
 	it('Given an activation code is supplied ' +
@@ -162,7 +162,7 @@ describe ('activate', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)			
+		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
 
@@ -203,7 +203,7 @@ describe ('activate', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)			
+		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
 	it('Given an activation code is supplied ' +
@@ -236,7 +236,7 @@ describe ('activate', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)				
+		var routes = require('../lib/routes')(mockExpressApp)				
 	})
 
 	it('When routes are set up ' +
@@ -269,7 +269,7 @@ describe ('activate', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)			
+		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 	it('Given an activation code is supplied ' +
 		'And the supplied code doesn\'t match the one in the active user\'s session ' +
@@ -300,7 +300,7 @@ describe ('activate', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)			
+		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
 	it('Given an activation code is supplied ' +
@@ -334,7 +334,7 @@ describe ('activate', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)			
+		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
 	it('Given an activation code is supplied ' +
@@ -372,7 +372,7 @@ describe ('activate', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)			
+		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
 
@@ -413,7 +413,7 @@ describe ('activate', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)			
+		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
 	it('Given an activation code is supplied ' +
@@ -446,7 +446,7 @@ describe ('activate', function () {
 			}
 		}
 
-		var routes = require('../../lib/routes')(mockExpressApp)				
+		var routes = require('../lib/routes')(mockExpressApp)				
 	})
 
 })

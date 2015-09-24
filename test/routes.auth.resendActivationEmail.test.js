@@ -4,8 +4,8 @@
 
 var should = require ('should')
 var mockExpressApp
-var utils = require('../../lib/utils')
-var helpers = require('../helpers')
+var utils = require('../lib/utils')
+var helpers = require('./helpers')
 
 beforeEach(function() {
 	mockExpressApp = {
@@ -59,7 +59,7 @@ describe ('resendActivationEmail', function () {
 				cb(mockRequest, mockResponse)
 			}
 		}
-		require('../../lib/routes')(mockExpressApp)
+		require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the request contains site host information ' +
@@ -88,7 +88,7 @@ describe ('resendActivationEmail', function () {
 				cb(mockRequest, mockResponse)
 			}
 		}
-		require('../../lib/routes')(mockExpressApp)
+		require('../lib/routes')(mockExpressApp)
 	})
 	it ('Given the session does not contain user information ' +
 		'When the activation email is requested to be sent ' +
@@ -111,7 +111,7 @@ describe ('resendActivationEmail', function () {
 				cb(mockRequest, null, mockNext)
 			}
 		}
-		require('../../lib/routes')(mockExpressApp)
+		require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given the request does not contain site host information ' +
@@ -135,7 +135,7 @@ describe ('resendActivationEmail', function () {
 				cb(mockRequest, null, mockNext)
 			}
 		}
-		require('../../lib/routes')(mockExpressApp)
+		require('../lib/routes')(mockExpressApp)
 	})
 
 	it ('Given required inputs are present ' +
@@ -165,7 +165,7 @@ describe ('resendActivationEmail', function () {
 		mockExpressApp.lib.emailer = {
 			sendIdentityConfirmation: function () {}
 		}
-		require('../../lib/routes')(mockExpressApp)
+		require('../lib/routes')(mockExpressApp)
 	})
 
 
