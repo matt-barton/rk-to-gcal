@@ -89,3 +89,31 @@ describe('routes/auth/runkeeper', function () {
 	})
 })
 
+describe('/routes/auth/runkeeper/callback', function () {
+
+	it ('When routes are set up ' +
+		'Then a GET handler is created for /auth/runkeeper/callback', function (done) {
+
+		helpers.assertHandlerExists(done, '/auth/runkeeper/callback', 'GET', true, true)
+	})
+
+	it ('Given there is no code argument in the request ' +
+		'When the runkeeper callback is requested' +
+		'Then an error is passed to the handler', function (done) {
+
+		var mockRequest = {
+			query: {}
+		}
+		var mockErrorHandler = function (e) {
+			e.message.should.equal('No access code present in rk redirect.')
+			done()
+		}
+		mockExpressApp.get = function (uri, middleware, cb) {
+			if (uri == '/auth/runkeeper/callback') {
+				cb (mockRequest, null, mockErrorHandler)
+			}
+		}
+		require('../lib/routes')(mockExpressApp)
+	})
+
+})
