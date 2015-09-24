@@ -5,28 +5,25 @@ var mockExpressApp
 var utils = require('../lib/utils')
 var helpers = require('./helpers')
 
-describe('routes', function () {
+describe('routes/auth/activate', function () {
 
-beforeEach(function() {
-	process.env.NODE_ENV = 'development'
-	mockExpressApp = {
-		get: function () {},
-		post: function () {},
-		use: function () {},
-		lib: {
-			auth: {},
-			utils: utils,
-			db: {
-				activateUser: function(id, cb) {
-					cb()
+	beforeEach(function() {
+		process.env.NODE_ENV = 'development'
+		mockExpressApp = {
+			get: function () {},
+			post: function () {},
+			use: function () {},
+			lib: {
+				auth: {},
+				utils: utils,
+				db: {
+					activateUser: function(id, cb) {
+						cb()
+					}
 				}
 			}
 		}
-	}
-})
-
-describe('auth', function () {
-describe ('activate', function () {
+	})
 
 	it('When routes are set up ' +
 		'Then a GET handler is set up for /auth/activate', function (done) {
@@ -449,6 +446,4 @@ describe ('activate', function () {
 		var routes = require('../lib/routes')(mockExpressApp)				
 	})
 
-})
-})
 })

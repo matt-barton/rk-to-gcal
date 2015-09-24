@@ -5,21 +5,19 @@ var mockExpressApp
 var utils = require('../lib/utils')
 var helpers = require('./helpers')
 
-beforeEach(function() {
-	mockExpressApp = {
-		get: function () {},
-		post: function () {},
-		use: function () {},
-		lib: {
-			auth: {},
-			utils: utils
-		}
-	}
-})
+describe ('routes/auth/logout', function () {
 
-describe ('routes', function () {
-describe ('auth', function () {
-describe ('logout', function () {
+	beforeEach(function() {
+		mockExpressApp = {
+			get: function () {},
+			post: function () {},
+			use: function () {},
+			lib: {
+				auth: {},
+				utils: utils
+			}
+		}
+	})
 
 	it('When routes are set up ' +
 		'Then a GET handler is set up for /auth/logout', function (done) {
@@ -124,6 +122,4 @@ describe ('logout', function () {
 		require('../lib/routes')(mockExpressApp)
 	})
 
-})
-})
 })
