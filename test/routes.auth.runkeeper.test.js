@@ -116,4 +116,136 @@ describe('/routes/auth/runkeeper/callback', function () {
 		require('../lib/routes')(mockExpressApp)
 	})
 
+
+	it ('Given there is a code argument in the request ' +
+		'When the runkeeper callback is requested ' +
+		'Then the code is recorded against the user\'s record', function (done) {
+
+		var mockRequest = {
+			query: {
+				code: 'RK CODE'
+			},
+			session: {
+				user: {
+					identity: 'IDENTITY'
+				}
+			}
+		}
+		mockExpressApp.get = function (uri, middleware, cb) {
+			if (uri == '/auth/runkeeper/callback') {
+				cb (mockRequest)
+			}
+		}
+		mockExpressApp.lib.db = {
+			saveUserRKCode: function (identity, code) {
+				identity.should.equal ('IDENTITY')
+				code.should.equal('RK CODE')
+				done()
+			}
+		}
+		require('../lib/routes')(mockExpressApp)
+	})
+
+	it ('Given there is an error ' +
+		'When the recording a user\'s rk code ' +
+		'Then the error is passed to the error handler', function (done) {
+
+		var error = new Error ('THIS IS THE ERROR')
+		var mockRequest = {
+			query: {
+				code: 'RK CODE'
+			},
+			session: {
+				user: {
+					identity: 'IDENTITY'
+				}
+			}
+		}
+		var mockErrorHandler = function (e) {
+			e.message.should.equal('THIS IS THE ERROR')
+			done()
+		}
+		mockExpressApp.get = function (uri, middleware, cb) {
+			if (uri == '/auth/runkeeper/callback') {
+				cb (mockRequest, null, mockErrorHandler)
+			}
+		}
+		mockExpressApp.lib.db = {
+			saveUserRKCode: function (identity, code, cb) {
+				cb(error)
+			}
+		}
+		require('../lib/routes')(mockExpressApp)
+	})
+
+	it ('Given there is no error ' +
+		'When the recording a user\'s rk code ' +
+		'Then the index view is displayed, with a message', function (done) {
+
+		var error = new Error ('THIS IS THE ERROR')
+		var mockRequest = {
+			query: {
+				code: 'RK CODE'
+			},
+			session: {
+				user: {
+					identity: 'IDENTITY'
+				}
+			}
+		}
+		var mockResponse = {
+			render: function (viewname, data) {
+				viewname.should.equal('index')
+				data.message.should.equal('Account successfully connected to RunKeeper.')
+				done()
+			}
+		}
+		mockExpressApp.get = function (uri, middleware, cb) {
+			if (uri == '/auth/runkeeper/callback') {
+				cb (mockRequest, mockResponse)
+			}
+		}
+		mockExpressApp.lib.db = {
+			saveUserRKCode: function (identity, code, cb) {
+				cb(null)
+			}
+		}
+		require('../lib/routes')(mockExpressApp)
+	})
+
+	it ('Given there is no error ' +
+		'When the recording a user\'s rk code ' +
+		'Then the session is updated with the user\'s rk connection', function (done) {
+
+		var error = new Error ('THIS IS THE ERROR')
+		var mockRequest = {
+			query: {
+				code: 'RK CODE'
+			},
+			session: {
+				user: {
+					identity: 'IDENTITY'
+				}
+			}
+		}
+		var mockResponse = {
+			render: function () {
+				mockRequest.session.user.rkCode.should.equal('RK CODE')
+				done()
+			}
+		}
+		mockExpressApp.get = function (uri, middleware, cb) {
+			if (uri == '/auth/runkeeper/callback') {
+				cb (mockRequest, mockResponse)
+			}
+		}
+		mockExpressApp.lib.db = {
+			saveUserRKCode: function (identity, code, cb) {
+				cb(null)
+			}
+		}
+		require('../lib/routes')(mockExpressApp)
+	})
+
+
 })
