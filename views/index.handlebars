@@ -7,9 +7,13 @@
 		{{#if session.user.identityConfirmed}}
 		<div>
 			<ul>
+				{{#unless session.user.rkCode}}
 				<li>
 			    	<a href="/auth/runkeeper">Connect with Runkeeper</a>
 				</li>
+				{{/unless}}
+				<a href="/auth/google">Connect with Google</a>
+
 				<li>
 					<a href="/auth/logout">Sign Out</a>
 				</li>

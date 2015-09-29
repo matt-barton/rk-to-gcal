@@ -20,21 +20,21 @@ describe('routes/auth/runkeeper', function () {
 		}
 	})
 
-	it ('When routes are set up ' +
+	it ('When routes are set up\n' +
 		'Then a GET handler is created for /auth/runkeeper', function (done) {
 
 		helpers.assertHandlerExists(done, '/auth/runkeeper', 'GET', true)
 	})
 
-	it ('When routes are set up ' +
+	it ('When routes are set up\n' +
 		'Then middleware requiring authentication is used on the /auth/runkeeper route', function (done) {
 
 		helpers.assertHandlerExists(done, '/auth/runkeeper', 'GET', true, true)
 	})
 
-	it ('Given the user is not authenticated ' +
-		'When the /auth/runkeeper url is requested ' +
-		'Then the response.redirect method is used to ' +
+	it ('Given the user is not authenticated\n' +
+		'When the /auth/runkeeper url is requested\n' +
+		'Then the response.redirect method is used to\n' +
 		'redirect the user to the /auth/login', function (done) {
 
 		var mockAuth = {
@@ -58,9 +58,9 @@ describe('routes/auth/runkeeper', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the user is authenticated ' +
-		'When the /auth/runkeeper url is requested ' +
-		'Then the response.redirect method is used to ' +
+	it ('Given the user is authenticated\n' +
+		'When the /auth/runkeeper url is requested\n ' +
+		'Then the response.redirect method is used to\n' +
 		'redirect the user to the /auth/login', function (done) {
 		var rkRedirection = false
 
@@ -87,18 +87,53 @@ describe('routes/auth/runkeeper', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 		rkRedirection.should.equal(true)
 	})
+
+	it ('Given the user is authenticated\n' +
+		'And already connected to RukKeeper\n' +
+		'When the /auth/runkeeper url is requested\n' +
+		'Then index view is rendered without any redirect to RK authentication', function (done) {
+		var rkRedirection = false
+		var mockRequest = {
+			session: {
+				user: {
+					identity: 'IDENTITY',
+					rkCode: 'RK CODE'
+				}
+			}
+		}
+		var mockResponseObject = {
+			render: function (viewname) {
+				viewname.should.equal('index')
+				rkRedirection.should.equal(false)
+				done()
+			}
+		}
+		var mockRunkeeperModule = {
+			redirectToRKAuth: function (response) {
+				rkRedirection = true
+			}
+		}
+		mockExpressApp.get = function (uri, middleware, cb) {
+			if (uri == '/auth/runkeeper') {
+				cb (mockRequest, mockResponseObject)
+			}
+		}
+		mockExpressApp.lib.rk = mockRunkeeperModule
+
+		require('../lib/routes')(mockExpressApp)
+	})
 })
 
 describe('/routes/auth/runkeeper/callback', function () {
 
-	it ('When routes are set up ' +
+	it ('When routes are set up\n' +
 		'Then a GET handler is created for /auth/runkeeper/callback', function (done) {
 
 		helpers.assertHandlerExists(done, '/auth/runkeeper/callback', 'GET', true, true)
 	})
 
-	it ('Given there is no code argument in the request ' +
-		'When the runkeeper callback is requested' +
+	it ('Given there is no code argument in the request\n' +
+		'When the runkeeper callback is requested\n' +
 		'Then an error is passed to the handler', function (done) {
 
 		var mockRequest = {
@@ -117,8 +152,8 @@ describe('/routes/auth/runkeeper/callback', function () {
 	})
 
 
-	it ('Given there is a code argument in the request ' +
-		'When the runkeeper callback is requested ' +
+	it ('Given there is a code argument in the request\n' +
+		'When the runkeeper callback is requested\n' +
 		'Then the code is recorded against the user\'s record', function (done) {
 
 		var mockRequest = {
@@ -146,8 +181,8 @@ describe('/routes/auth/runkeeper/callback', function () {
 		require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given there is an error ' +
-		'When the recording a user\'s rk code ' +
+	it ('Given there is an error\n' +
+		'When the recording a user\'s rk code\n' +
 		'Then the error is passed to the error handler', function (done) {
 
 		var error = new Error ('THIS IS THE ERROR')
@@ -178,8 +213,8 @@ describe('/routes/auth/runkeeper/callback', function () {
 		require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given there is no error ' +
-		'When the recording a user\'s rk code ' +
+	it ('Given there is no error\n' +
+		'When the recording a user\'s rk code\n' +
 		'Then the index view is displayed, with a message', function (done) {
 
 		var error = new Error ('THIS IS THE ERROR')
@@ -213,8 +248,8 @@ describe('/routes/auth/runkeeper/callback', function () {
 		require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given there is no error ' +
-		'When the recording a user\'s rk code ' +
+	it ('Given there is no error\n' +
+		'When the recording a user\'s rk code\n' +
 		'Then the session is updated with the user\'s rk connection', function (done) {
 
 		var error = new Error ('THIS IS THE ERROR')
