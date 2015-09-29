@@ -43,6 +43,16 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static(__dirname + '/assets'))
 }
 
+// check environment config
+var required = require('./config/environment.config.json')
+
+for (var x=0; x<required.vars.length; x++) {
+    var q = required.vars[x]
+    if (!process.env[q]) {
+        throw new Error ('Required environment variable is missing: ' + q)
+    }
+}
+
 // set-up express
 app.use(morgan('dev'))
 app.use(cookieParser())
