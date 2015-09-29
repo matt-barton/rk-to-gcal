@@ -23,9 +23,9 @@ beforeEach(function() {
 
 describe('error handling', function () {
 
-	it ('Given headers have not been started ' +
-		'When the error handler is invoked ' +
-		'Then the error view is rendered ' +
+	it ('Given headers have not been started\n ' +
+		'When the error handler is invoked\n ' +
+		'Then the error view is rendered\n ' +
 		'And the response status is set to 500', function (done) {
 		var mockError = new Error ('THIS IS THE ERROR')
 		var mockResponse = {
@@ -44,8 +44,8 @@ describe('error handling', function () {
 		mockResponse.status.should.equal(500)
 	})
 
-	it ('Given headers have already been started ' +
-		'When the error handler is invoked ' +
+	it ('Given headers have already been started\n ' +
+		'When the error handler is invoked\n ' +
 		'Then the thrown error is given to Express to handle', function (done) {
 		var mockError = new Error ('THIS IS THE ERROR')
 		var mockResponse = {
@@ -62,8 +62,8 @@ describe('error handling', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the application is not running in production mode ' +
-		'When the error handler is invoked ' +
+	it ('Given the application is not running in production mode\n ' +
+		'When the error handler is invoked\n ' +
 		'Then the error message displayed is from the thrown error', function (done) {
 		var mockError = new Error ('THIS IS THE ERROR')
 		var mockResponse = {
@@ -82,8 +82,8 @@ describe('error handling', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the application is running in production mode ' +
-		'When the error handler is invoked ' +
+	it ('Given the application is running in production mode\n ' +
+		'When the error handler is invoked\n ' +
 		'Then the error message displayed is sanitised', function (done) {
 		process.env.NODE_ENV = 'production'
 		var mockError = new Error ('THIS IS THE ERROR')
@@ -108,13 +108,13 @@ describe('error handling', function () {
 
 describe('home', function () {
 
-	it ('When routes are set up ' +
+	it ('When routes are set up\n ' +
 		'Then a GET handler is created for the root of the website', function (done) {
 
 		helpers.assertHandlerExists(done, '/', 'GET')
 	})
 
-	it('When the GET / route is requested ' +
+	it('When the GET / route is requested\n ' +
 		'Then the index view is rendered', function (done) {
 
 		var mockResponseObject = {

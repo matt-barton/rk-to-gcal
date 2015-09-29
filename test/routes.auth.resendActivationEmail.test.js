@@ -22,14 +22,14 @@ describe ('routes/auth/resendActivationEmail', function () {
 		}
 	})
 
-	it('When routes are set up ' +
+	it('When routes are set up\n ' +
 		'Then a GET handler is set up for /auth/resendActivationEmail', function (done) {
 
 		helpers.assertHandlerExists(done, '/auth/resendActivationEmail', 'GET', true, true)
 	})
 
-	it ('Given the session contains user information ' +
-		'When the activation email is requested to be sent ' +
+	it ('Given the session contains user information\n ' +
+		'When the activation email is requested to be sent \n' +
 		'Then the user information is passed to the emailer', function (done) {
 
 		var mockUser = {
@@ -61,8 +61,8 @@ describe ('routes/auth/resendActivationEmail', function () {
 		require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the request contains site host information ' +
-		'When the activation email is requested to be sent ' +
+	it ('Given the request contains site host information\n ' +
+		'When the activation email is requested to be sent\n ' +
 		'Then the site host information is passed to the emailer', function (done) {
 
 		var mockRequest = {
@@ -89,8 +89,8 @@ describe ('routes/auth/resendActivationEmail', function () {
 		}
 		require('../lib/routes')(mockExpressApp)
 	})
-	it ('Given the session does not contain user information ' +
-		'When the activation email is requested to be sent ' +
+	it ('Given the session does not contain user information\n ' +
+		'When the activation email is requested to be sent\n ' +
 		'Then an error passed to the error handler', function (done) {
 
 		var mockRequest = {
@@ -113,8 +113,8 @@ describe ('routes/auth/resendActivationEmail', function () {
 		require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the request does not contain site host information ' +
-		'When the activation email is requested to be sent ' +
+	it ('Given the request does not contain site host information\n ' +
+		'When the activation email is requested to be sent\n ' +
 		'Then an error passed to the error handler', function (done) {
 
 		var mockRequest = {
@@ -137,8 +137,8 @@ describe ('routes/auth/resendActivationEmail', function () {
 		require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given required inputs are present ' +
-		'When the activation email is requested to be sent ' +
+	it ('Given required inputs are present\n ' +
+		'When the activation email is requested to be sent\n ' +
 		'Then the index view is displayed with a message', function (done) {
 
 		var mockRequest = {

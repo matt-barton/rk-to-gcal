@@ -25,14 +25,14 @@ describe('routes/auth/activate', function () {
 		}
 	})
 
-	it('When routes are set up ' +
+	it('When routes are set up\n ' +
 		'Then a GET handler is set up for /auth/activate', function (done) {
 
 		helpers.assertHandlerExists(done, '/auth/activate', 'GET', true, true)
 	})
 
-	it('Given no activation code is supplied ' +
-		'When the /auth/activate route is requested ' +
+	it('Given no activation code is supplied\n ' +
+		'When the /auth/activate route is requested\n ' +
 		'Then the activateError view is displayed', function (done) {
 
 		var mockRequest = {
@@ -58,9 +58,9 @@ describe('routes/auth/activate', function () {
 		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
-	it('Given an activation code is supplied ' +
-		'And the supplied code doesn\'t match the one in the active user\'s session ' +
-		'When the /auth/activate route is requested ' +
+	it('Given an activation code is supplied\n ' +
+		'And the supplied code doesn\'t match the one in the active user\'s session\n ' +
+		'When the /auth/activate route is requested\n ' +
 		'Then the activateError view is displayed', function (done) {
 
 		var mockRequest = {
@@ -90,9 +90,9 @@ describe('routes/auth/activate', function () {
 		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
-	it('Given an activation code is supplied ' +
-		'And the supplied code matches the one in the active user\'s session ' +
-		'When the /auth/activate route is requested ' +
+	it('Given an activation code is supplied\n ' +
+		'And the supplied code matches the one in the active user\'s session\n ' +
+		'When the /auth/activate route is requested\n ' +
 		'Then the index view is displayed with a message', function (done) {
 
 		var activationCode = 'ACTIVATION CODE'
@@ -124,9 +124,9 @@ describe('routes/auth/activate', function () {
 		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
-	it('Given an activation code is supplied ' +
-		'And the supplied code matches the one in the active user\'s session ' +
-		'When the /auth/activate route is requested ' +
+	it('Given an activation code is supplied\n ' +
+		'And the supplied code matches the one in the active user\'s session\n ' +
+		'When the /auth/activate route is requested\n ' +
 		'Then the user account is activated', function (done) {
 
 		var activationCode = 'ACTIVATION CODE'
@@ -163,8 +163,8 @@ describe('routes/auth/activate', function () {
 	})
 
 
-	it('Given an error occurrs ' +
-		'When the user account is activated ' +
+	it('Given an error occurrs\n ' +
+		'When the user account is activated\n ' +
 		'Then the error is passed to the error handler middleware', function (done) {
 
 		var error = new Error ('AN ERROR')
@@ -203,9 +203,9 @@ describe('routes/auth/activate', function () {
 		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
-	it('Given an activation code is supplied ' +
-		'And the supplied code matches the one in the active user\'s session ' +
-		'When the /auth/activate route is requested ' +
+	it('Given an activation code is supplied\n ' +
+		'And the supplied code matches the one in the active user\'s session\n ' +
+		'When the /auth/activate route is requested\n ' +
 		'Then the user record in the session is updated', function (done) {
 
 		var activationCode = 'ACTIVATION CODE'
@@ -236,14 +236,14 @@ describe('routes/auth/activate', function () {
 		var routes = require('../lib/routes')(mockExpressApp)				
 	})
 
-	it('When routes are set up ' +
+	it('When routes are set up\n ' +
 		'Then a POST handler is set up for /auth/activate', function (done) {
 
 		helpers.assertHandlerExists(done, '/auth/activate', 'POST', true, true)
 	})
 
-	it('Given no activate code is supplied ' +
-		'When /auth/activate is posted to ' + 
+	it('Given no activate code is supplied\n ' +
+		'When /auth/activate is posted to\n ' + 
 		'Then the activateError view is displayed', function (done) {
 
 		var mockRequest = {
@@ -268,9 +268,9 @@ describe('routes/auth/activate', function () {
 
 		var routes = require('../lib/routes')(mockExpressApp)			
 	})
-	it('Given an activation code is supplied ' +
-		'And the supplied code doesn\'t match the one in the active user\'s session ' +
-		'When /auth/activate route is posted to ' +
+	it('Given an activation code is supplied \n' +
+		'And the supplied code doesn\'t match the one in the active user\'s session\n ' +
+		'When /auth/activate route is posted to\n ' +
 		'Then the activateError view is displayed', function (done) {
 
 		var mockRequest = {
@@ -300,9 +300,9 @@ describe('routes/auth/activate', function () {
 		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
-	it('Given an activation code is supplied ' +
-		'And the supplied code matches the one in the active user\'s session ' +
-		'When /auth/activate is posted to ' +
+	it('Given an activation code is supplied\n ' +
+		'And the supplied code matches the one in the active user\'s session\n ' +
+		'When /auth/activate is posted to\n ' +
 		'Then the index view is displayed with a message', function (done) {
 
 		var activationCode = 'ACTIVATION CODE'
@@ -334,9 +334,9 @@ describe('routes/auth/activate', function () {
 		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
-	it('Given an activation code is supplied ' +
-		'And the supplied code matches the one in the active user\'s session ' +
-		'When /auth/activate is posted to ' +
+	it('Given an activation code is supplied\n ' +
+		'And the supplied code matches the one in the active user\'s session\n ' +
+		'When /auth/activate is posted to\n ' +
 		'Then the user account is activated', function (done) {
 
 		var activationCode = 'ACTIVATION CODE'
@@ -373,8 +373,8 @@ describe('routes/auth/activate', function () {
 	})
 
 
-	it('Given an error occurrs ' +
-		'When the user account is activated via a post ' +
+	it('Given an error occurrs\n ' +
+		'When the user account is activated via a post\n ' +
 		'Then the error is passed to the error handler middleware', function (done) {
 
 		var error = new Error ('AN ERROR')
@@ -413,9 +413,9 @@ describe('routes/auth/activate', function () {
 		var routes = require('../lib/routes')(mockExpressApp)			
 	})
 
-	it('Given an activation code is supplied ' +
-		'And the supplied code matches the one in the active user\'s session ' +
-		'When /auth/activate is posted to ' +
+	it('Given an activation code is supplied\n ' +
+		'And the supplied code matches the one in the active user\'s session\n ' +
+		'When /auth/activate is posted to\n ' +
 		'Then the user record in the session is updated', function (done) {
 
 		var activationCode = 'ACTIVATION CODE'

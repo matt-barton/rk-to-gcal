@@ -57,8 +57,8 @@ beforeEach (function () {
 
 describe('sendIdentityConfirmation', function() {
 
-	it ('Given no transport is set up ' +
-		'When an identity confirmation email is requested ' +
+	it ('Given no transport is set up\n' +
+		'When an identity confirmation email is requested\n' +
 		'Then a transport is set up', function (done) {
 
 		mockSmtpTransport = function (options) {
@@ -78,8 +78,8 @@ describe('sendIdentityConfirmation', function() {
 		mailer.sendIdentityConfirmation(mockRecipient, null, function(){})
 	})
 
-	it ('Given no transport is set up ' +
-		'When an identity confirmation email is requested twice ' +
+	it ('Given no transport is set up\n ' +
+		'When an identity confirmation email is requested twice\n ' +
 		'Then a transport is set up only once', function (done) {
 
 		var called = 0
@@ -96,8 +96,8 @@ describe('sendIdentityConfirmation', function() {
 		})
 	})
 
-	it ('Given a transport is set up ' +
-		'When an identity confirmation email is requested ' +
+	it ('Given a transport is set up\n ' +
+		'When an identity confirmation email is requested\n ' +
 		'Then the identity confirmation email template is obtained', function (done) {
 
 		var mockFs = {
@@ -113,8 +113,8 @@ describe('sendIdentityConfirmation', function() {
 		mailer.sendIdentityConfirmation(mockRecipient, null, function() {})
 	})
 
-	it ('Given a transport is set up ' +
-		'When an identity confirmation email is requested ' +
+	it ('Given a transport is set up\n' +
+		'When an identity confirmation email is requested\n ' +
 		'Then an email is sent via the transport', function (done) {
 
 		mockFs.readFileSync = function () {

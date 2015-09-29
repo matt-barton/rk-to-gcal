@@ -19,15 +19,15 @@ describe ('routes/auth/logout', function () {
 		}
 	})
 
-	it('When routes are set up ' +
+	it('When routes are set up\n ' +
 		'Then a GET handler is set up for /auth/logout', function (done) {
 
 		helpers.assertHandlerExists(done, '/auth/logout', 'GET')
 	})
 
-	it('Given the user is not logged in ' +
-		'When the /auth/logout route is requested ' +
-		'Then the index view is rendered ' +
+	it('Given the user is not logged in\n ' +
+		'When the /auth/logout route is requested\n ' +
+		'Then the index view is rendered\n ' +
 		'And the session is left unaltered', function (done) {
 
 		var called = false
@@ -57,8 +57,8 @@ describe ('routes/auth/logout', function () {
 		called.should.equal(false)
 	})
 
-	it('Given the user is logged in ' +
-		'When the /auth/logout route is requested ' +
+	it('Given the user is logged in\n ' +
+		'When the /auth/logout route is requested\n ' +
 		'Then the index view is rendered', function (done) {
 
 		var mockRequest = {
@@ -89,8 +89,8 @@ describe ('routes/auth/logout', function () {
 		require('../lib/routes')(mockExpressApp)
 	})
 
-	it('Given the user is logged in ' +
-		'When the /auth/logout route is requested ' +
+	it('Given the user is logged in\n ' +
+		'When the /auth/logout route is requested\n ' +
 		'Then the user info is cleared from the session', function (done) {
 
 		var mockRequest = {

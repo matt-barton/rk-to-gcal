@@ -23,8 +23,8 @@ describe ('auth', function () {
 
 	describe ('requiresAuthentication', function () {
 
-		it ('Given a request session doesn\'t exist ' +
-			'When authentication status is tested ' +
+		it ('Given a request session doesn\'t exist\n ' +
+			'When authentication status is tested\n ' +
 			'Then the result.redirect method is invoked', function (done) {
 
 			var redirectCalled = false
@@ -42,8 +42,8 @@ describe ('auth', function () {
 			redirectCalled.should.equal(true)
 		})
 
-		it ('Given a request session doesn\'t exist ' +
-			'When authentication status is tested ' +
+		it ('Given a request session doesn\'t exist\n ' +
+			'When authentication status is tested \n' +
 			'Then the result.redirect method is used to redirect to /auth/login', function (done) {
 
 			var mockResult = {
@@ -58,8 +58,8 @@ describe ('auth', function () {
 			auth.requiresAuthentication({}, mockResult)
 		})
 
-		it ('Given a request session is null ' +
-			'When authentication status is tested ' +
+		it ('Given a request session is null\n ' +
+			'When authentication status is tested\n ' +
 			'Then the result.redirect method is used to redirect to /auth/login', function (done) {
 
 			var mockResult = {
@@ -78,9 +78,9 @@ describe ('auth', function () {
 		})
 
 
-		it ('Given a request session exists ' +
-			'And the session contains no user data ' +
-			'When authentication status is tested ' +
+		it ('Given a request session exists\n ' +
+			'And the session contains no user data \n' +
+			'When authentication status is tested\n ' +
 			'Then the result.redirect method is used to redirect to /auth/login', function (done) {
 
 			var mockResult = {
@@ -98,9 +98,9 @@ describe ('auth', function () {
 			auth.requiresAuthentication(mockRequest, mockResult)
 		})
 
-		it ('Given a request session exists ' +
-			'And the session contains a user with no identity ' +
-			'When authentication status is tested ' +
+		it ('Given a request session exists\n ' +
+			'And the session contains a user with no identity\n ' +
+			'When authentication status is tested\n ' +
 			'Then the result.redirect method is used to redirect to /auth/login', function (done) {
 
 			var mockResult = {
@@ -120,9 +120,9 @@ describe ('auth', function () {
 			auth.requiresAuthentication(mockRequest, mockResult)
 		})
 
-		it ('Given a request session exists ' +
-			'And the session contains a user identity ' +
-			'When authentication status is tested ' +
+		it ('Given a request session exists\n ' +
+			'And the session contains a user identity\n ' +
+			'When authentication status is tested \n' +
 			'Then the next method is invoked', function (done) {
 
 			var nextInvoked = false
@@ -148,8 +148,8 @@ describe ('auth', function () {
 
 	describe ('login', function() {
 
-		it ('Given an identity is not supplied ' +
-			'When logging in ' +
+		it ('Given an identity is not supplied\n ' +
+			'When logging in\n ' +
 			'Then an error is invoked', function (done) {
 
 			var auth = new Auth(mockApp)
@@ -166,8 +166,8 @@ describe ('auth', function () {
 			})
 		})
 
-		it ('Given a password is not supplied ' +
-			'When logging in ' +
+		it ('Given a password is not supplied\n ' +
+			'When logging in\n ' +
 			'Then an error is invoked', function (done) {
 
 			var auth = new Auth(mockApp)
@@ -184,8 +184,8 @@ describe ('auth', function () {
 			})
 		})
 
-		it ('Given a username and password are supplied ' +
-			'When logging in ' +
+		it ('Given a username and password are supplied\n ' +
+			'When logging in\n ' +
 			'Then a user record is retrieved for the username', function (done) {
 
 			mockApp.lib.db = {
@@ -205,8 +205,8 @@ describe ('auth', function () {
 			auth.login(request, function() {})
 		})
 
-		it ('Given an error occurs ' +
-			'When logging in ' +
+		it ('Given an error occurs\n ' +
+			'When logging in\n ' +
 			'Then the error is bubbled up', function (done) {
 
 			mockApp.lib.db = {
@@ -229,8 +229,8 @@ describe ('auth', function () {
 			})
 		})
 
-		it ('Given no user account is found for the supplied identity ' +
-			'When logging in ' +
+		it ('Given no user account is found for the supplied identity\n ' +
+			'When logging in \n' +
 			'Then a negative response is returned', function (done) {
 
 			mockApp.lib.db = {
@@ -253,9 +253,9 @@ describe ('auth', function () {
 			})
 		})
 
-		it ('Given a user account is found for the supplied username ' +
-			'And the password supplied does not match the stored password ' +
-			'When logging in ' +
+		it ('Given a user account is found for the supplied username\n ' +
+			'And the password supplied does not match the stored password\n ' +
+			'When logging in\n ' +
 			'Then a negative response is returned', function (done) {
 			this.timeout(10000)
 			mockApp.lib.db = {
@@ -281,9 +281,9 @@ describe ('auth', function () {
 		})
 
 
-		it ('Given a user account is found for the supplied username ' +
-			'And the password supplied matches the stored password ' +
-			'When logging in ' +
+		it ('Given a user account is found for the supplied username \n' +
+			'And the password supplied matches the stored password\n ' +
+			'When logging in\n ' +
 			'Then the stored user record is returned', function (done) {
 			this.timeout(10000)
 
@@ -313,9 +313,9 @@ describe ('auth', function () {
 		})
 
 
-		it ('Given a user account is found for the supplied username ' +
-			'And the password supplied matches the stored password ' +
-			'When logging in ' +
+		it ('Given a user account is found for the supplied username\n ' +
+			'And the password supplied matches the stored password\n ' +
+			'When logging in\n ' +
 			'Then the stored user record is registered in the request seession', function (done) {
 			this.timeout(10000)
 
@@ -348,8 +348,8 @@ describe ('auth', function () {
 
 	describe ('register', function() {
 
-		it ('Given no identity is supplied ' +
-			'When a user is registered ' +
+		it ('Given no identity is supplied\n ' +
+			'When a user is registered\n ' +
 			'Then failure is returned with a message', function (done) {
 
 			var request = {
@@ -365,8 +365,8 @@ describe ('auth', function () {
 			})		
 		})
 
-		it ('Given a null identity is supplied ' +
-			'When a user is registered ' +
+		it ('Given a null identity is supplied \n' +
+			'When a user is registered \n' +
 			'Then failure is returned with a message', function (done) {
 
 			var request = {
@@ -384,8 +384,8 @@ describe ('auth', function () {
 			})		
 		})
 
-		it ('Given an identity containing only whitespace is supplied ' +
-			'When a user is registered ' +
+		it ('Given an identity containing only whitespace is supplied\n ' +
+			'When a user is registered\n ' +
 			'Then failure is returned with a message', function (done) {
 
 			var request = {
@@ -404,8 +404,8 @@ describe ('auth', function () {
 		})
 
 
-		it ('Given an no password is supplied ' +
-			'When a user is registered ' +
+		it ('Given an no password is supplied\n ' +
+			'When a user is registered\n ' +
 			'Then failure is returned with a message', function (done) {
 
 			var request = {
@@ -423,8 +423,8 @@ describe ('auth', function () {
 			})		
 		})
 
-		it ('Given an identity and password ' +
-			'When a user is registered ' +
+		it ('Given an identity and password\n ' +
+			'When a user is registered\n ' +
 			'Then the identity is checked for uniqueness', function (done) {
 
 			var request = {
@@ -445,8 +445,8 @@ describe ('auth', function () {
 			auth.register(request)		
 		})
 
-		it ('Given an error is thrown ' +
-			'When a identity uniqueness is being checked ' +
+		it ('Given an error is thrown\n ' +
+			'When a identity uniqueness is being checked\n ' +
 			'Then the error is passed on', function (done) {
 
 			var error = new Error ('This is the error')
@@ -470,8 +470,8 @@ describe ('auth', function () {
 			})		
 		})
 
-		it ('Given the suplied identity is already known in the database ' +
-			'When registering ' +
+		it ('Given the suplied identity is already known in the database\n ' +
+			'When registering\n ' +
 			'Then failure is returned with a message', function (done) {
 
 			var request = {
@@ -498,8 +498,8 @@ describe ('auth', function () {
 			})		
 		})
 	
-		it ('Given the suplied inputs are ok ' +
-			'When registering ' +
+		it ('Given the suplied inputs are ok\n ' +
+			'When registering\n ' +
 			'Then a user record is created in the database', function (done) {
 
 			var request = {
@@ -524,8 +524,8 @@ describe ('auth', function () {
 			auth.register(request)		
 		})
 
-		it ('Given an error is thrown ' +
-			'When creating a user record ' +
+		it ('Given an error is thrown\n ' +
+			'When creating a user record \n' +
 			'Then the error is correctly handled', function (done) {
 
 			var error = new Error ('This is an error')
@@ -552,8 +552,8 @@ describe ('auth', function () {
 			})
 		})
 
-		it ('Given a user record is created ' +
-			'When registering ' +
+		it ('Given a user record is created\n ' +
+			'When registering\n ' +
 			'Then the session is updated to record a login', function (done) {
 
 			var mockUserRecord = {
@@ -588,8 +588,8 @@ describe ('auth', function () {
 			})		
 		})
 
-		it ('Given a user record is created ' +
-			'When registering ' +
+		it ('Given a user record is created\n ' +
+			'When registering\n ' +
 			'Then an identity confirmation email is requested', function (done) {
 
 			var mockUserRecord = {
@@ -626,8 +626,8 @@ describe ('auth', function () {
 			auth.register(request, function() {})		
 		})
 
-		it ('Given a user record is created ' +
-			'When registering ' +
+		it ('Given a user record is created\n ' +
+			'When registering\n ' +
 			'Then success is returned', function (done) {
 
 			var request = {
@@ -662,8 +662,8 @@ describe ('auth', function () {
 
 	describe('logout', function () {
 
-		it ('Given user information is present in the session ' +
-			'When logging out ' +
+		it ('Given user information is present in the session \n' +
+			'When logging out\n ' +
 			'Then the user information is removed from the session', function (done) {
 
 			var request = {

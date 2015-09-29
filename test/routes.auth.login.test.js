@@ -20,13 +20,13 @@ describe('routes/auth/login', function () {
 		}
 	})
 
-	it('When routes are set up ' +
+	it('When routes are set up\n ' +
 		'Then a GET handler is set up for /auth/login', function (done) {
 
 		helpers.assertHandlerExists(done, '/auth/login', 'GET')
 	})
 
-	it('When the GET /auth/login routes is requested ' +
+	it('When the GET /auth/login routes is requested\n ' +
 		'Then the login view is rendered', function (done) {
 
 		var mockResponseObject = {
@@ -45,15 +45,15 @@ describe('routes/auth/login', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it('When routes are set up ' +
+	it('When routes are set up\n ' +
 		'Then a POST handler is set up for /auth/login', function (done) {
 
 		helpers.assertHandlerExists(done, '/auth/login', 'POST')
 	})
 
 
-	it ('Given the request data does not contain an identity field ' +
-		'When the /auth/login route is posted to ' +
+	it ('Given the request data does not contain an identity field\n ' +
+		'When the /auth/login route is posted to \n' +
 		'Then the login view is rendered with an error message', function (done) {
 
 		var mockResponse = {
@@ -78,9 +78,9 @@ describe('routes/auth/login', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the request data contains an identity field ' +
-		'But not a password ' +
-		'When the /auth/login route is posted to ' +
+	it ('Given the request data contains an identity field\n ' +
+		'But not a password\n ' +
+		'When the /auth/login route is posted to\n ' +
 		'Then the login view is rendered with an error message', function (done) {
 
 		var mockResponse = {
@@ -107,8 +107,8 @@ describe('routes/auth/login', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the request data contains an identity and a password ' +
-		'When the /auth/login route is posted to ' +
+	it ('Given the request data contains an identity and a password\n ' +
+		'When the /auth/login route is posted to\n ' +
 		'Then the login is validated', function (done) {
 
 		var mockRequest = {
@@ -134,8 +134,8 @@ describe('routes/auth/login', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the posted identity and password are valid ' +
-		'When the /auth/login route is posted to ' +
+	it ('Given the posted identity and password are valid\n ' +
+		'When the /auth/login route is posted to\n ' +
 		'Then the index view is rendered', function (done) {
 
 		var mockRequest = {
@@ -165,8 +165,8 @@ describe('routes/auth/login', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the posted identity and password are not valid ' +
-		'When the /auth/login route is posted to ' +
+	it ('Given the posted identity and password are not valid \n' +
+		'When the /auth/login route is posted to\n ' +
 		'Then the login view is rendered with an error message', function (done) {
 
 		var mockRequest = {
@@ -199,8 +199,8 @@ describe('routes/auth/login', function () {
 	})
 
 
-	it ('Given an error occurs while validating a login ' +
-		'When the /auth/login route is posted to ' +
+	it ('Given an error occurs while validating a login\n ' +
+		'When the /auth/login route is posted to\n ' +
 		'Then the error is passed to the error handler middleware', function (done) {
 
 		var mockRequest = {

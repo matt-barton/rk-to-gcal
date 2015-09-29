@@ -20,13 +20,13 @@ describe('routes/auth/register', function () {
 		}
 	})
 
-	it('When routes are set up ' +
+	it('When routes are set up\n ' +
 		'Then a GET handler is set up for /auth/register', function (done) {
 
 		helpers.assertHandlerExists(done, '/auth/register', 'GET')
 	})
 
-	it('When the GET /auth/register routes is requested ' +
+	it('When the GET /auth/register routes is requested\n ' +
 		'Then the register view is rendered', function (done) {
 
 		var mockResponseObject = {
@@ -45,15 +45,15 @@ describe('routes/auth/register', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it('When routes are set up ' +
+	it('When routes are set up\n ' +
 		'Then a POST handler is set up for /auth/register', function (done) {
 
 		helpers.assertHandlerExists(done, '/auth/register', 'POST')
 	})
 
 
-	it ('Given the request data does not contain an identity field ' +
-		'When the /auth/register route is posted to ' +
+	it ('Given the request data does not contain an identity field\n ' +
+		'When the /auth/register route is posted to\n ' +
 		'Then the register view is rendered with an error message', function (done) {
 
 		var mockResponse = {
@@ -78,8 +78,8 @@ describe('routes/auth/register', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the request data does not contain a password field ' +
-		'When the /auth/register route is posted to ' +
+	it ('Given the request data does not contain a password field \n' +
+		'When the /auth/register route is posted to\n ' +
 		'Then the register view is rendered with an error message', function (done) {
 
 		var mockResponse = {
@@ -106,8 +106,8 @@ describe('routes/auth/register', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the request data does not contain a password repeat field ' +
-		'When the /auth/register route is posted to ' +
+	it ('Given the request data does not contain a password repeat field \n' +
+		'When the /auth/register route is posted to\n ' +
 		'Then the register view is rendered with an error message', function (done) {
 
 		var mockResponse = {
@@ -135,8 +135,8 @@ describe('routes/auth/register', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the request data contains only whitespace in the identity field ' +
-		'When the /auth/register route is posted to ' +
+	it ('Given the request data contains only whitespace in the identity field\n ' +
+		'When the /auth/register route is posted to\n ' +
 		'Then the register view is rendered with an error message', function (done) {
 
 		var mockResponse = {
@@ -163,8 +163,8 @@ describe('routes/auth/register', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the request data contains only whitespace in the password field ' +
-		'When the /auth/register route is posted to ' +
+	it ('Given the request data contains only whitespace in the password field\n ' +
+		'When the /auth/register route is posted to\n ' +
 		'Then the register view is rendered with an error message', function (done) {
 
 		var mockResponse = {
@@ -193,8 +193,8 @@ describe('routes/auth/register', function () {
 	})
 
 
-	it ('Given the request data contains only whitespace in the password repeat field ' +
-		'When the /auth/register route is posted to ' +
+	it ('Given the request data contains only whitespace in the password repeat field\n ' +
+		'When the /auth/register route is posted to \n' +
 		'Then the register view is rendered with an error message', function (done) {
 
 		var mockResponse = {
@@ -223,8 +223,8 @@ describe('routes/auth/register', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the supplied password and repeat fields do not match ' +
-		'When the /auth/register route is posted to ' +
+	it ('Given the supplied password and repeat fields do not match \n' +
+		'When the /auth/register route is posted to \n' +
 		'Then the register view is rendered with an error message', function (done) {
 
 		var mockResponse = {
@@ -253,9 +253,9 @@ describe('routes/auth/register', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the supplied password and repeat fields do match ' +
-		'And the password field is less than 10 characters in length ' +
-		'When the /auth/register route is posted to ' +
+	it ('Given the supplied password and repeat fields do match\n ' +
+		'And the password field is less than 10 characters in length\n ' +
+		'When the /auth/register route is posted to\n ' +
 		'Then the register view is rendered with an error message', function (done) {
 
 		var mockResponse = {
@@ -284,9 +284,9 @@ describe('routes/auth/register', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the supplied password and repeat fields do match ' +
-		'And the password field is the same as the identity field ' +
-		'When the /auth/register route is posted to ' +
+	it ('Given the supplied password and repeat fields do match\n ' +
+		'And the password field is the same as the identity field\n ' +
+		'When the /auth/register route is posted to \n' +
 		'Then the register view is rendered with an error message', function (done) {
 
 		var mockResponse = {
@@ -315,9 +315,9 @@ describe('routes/auth/register', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the supplied password and repeat fields match ' +
-		'And the identity field is valid ' +
-		'When the /auth/register route is posted to ' +
+	it ('Given the supplied password and repeat fields match\n ' +
+		'And the identity field is valid\n ' +
+		'When the /auth/register route is posted to\n ' +
 		'Then the user is registered with the auth module', function (done) {
 
 		var mockRequest = {
@@ -343,8 +343,8 @@ describe('routes/auth/register', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given an error is thrown ' +
-		'When the user is registered ' +
+	it ('Given an error is thrown\n ' +
+		'When the user is registered \n' +
 		'Then the error is passed to the error handler middleware', function (done) {
 
 		var error = new Error ('The Error')
@@ -374,8 +374,8 @@ describe('routes/auth/register', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the action is not successful ' +
-		'When the user is registered ' +
+	it ('Given the action is not successful \n' +
+		'When the user is registered \n' +
 		'Then the registration view is displayed with a message', function (done) {
 
 		var mockRequest = {
@@ -410,8 +410,8 @@ describe('routes/auth/register', function () {
 		var routes = require('../lib/routes')(mockExpressApp)
 	})
 
-	it ('Given the action is successful ' +
-		'When the user is registered ' +
+	it ('Given the action is successful \n' +
+		'When the user is registered \n' +
 		'Then the index view is displayed with a message', function (done) {
 
 		var mockRequest = {

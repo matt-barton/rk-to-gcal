@@ -14,7 +14,7 @@ describe('runkeeper', function() {
 		}
 		var utils = require('../lib/utils')
 
-		it ('When the runkeeper auth page is requested ' +
+		it ('When the runkeeper auth page is requested\n ' +
 			'Then the response object is used to trigger the redirect', function (done) {
 
 			var Runkeeper = require('../lib/runkeeper')
@@ -47,8 +47,8 @@ describe('runkeeper', function() {
 			endCaled.should.equal(true)
 		})
 
-		it ('Given runkeeper options are set ' +
-			'When the runkeeper auth page is requested ' +
+		it ('Given runkeeper options are set \n' +
+			'When the runkeeper auth page is requested\n ' +
 			'Then the rk auth url redirected to is correctly formed', function (done) {
 
 			var app = {
