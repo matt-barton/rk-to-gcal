@@ -75,7 +75,8 @@ describe('routes/auth/google', function () {
 			}
 		}
 		mockExpressApp.lib.google = {
-			redirectToAuth: function (responseObject) {
+			redirectToAuth: function (requestObject, responseObject) {
+				requestObject.should.equal(request)
 				responseObject.should.equal(response)
 				done()
 			}
