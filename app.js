@@ -66,6 +66,7 @@ app.use(function(req, res, next) {
 
 // config
 var rkOptions = require('./config/runkeeper.config.json')
+var googleConfig = require('./config/google.config.json')
 
 // database
 var cradle = require('cradle');
@@ -94,6 +95,10 @@ else {
 var db = new(cradle.Connection)(dbHost, dbPort, dbOptions)
     .database(dbDatabase);
 
+// google libraries
+var GoogleAuthLibrary = require('google-auth-library')
+var googleAuth = new GoogleAuthLibrary
+
 // libraries
 app.lib = {}
 
@@ -102,11 +107,14 @@ var Auth = require('./lib/auth')
 var Couch  = require('./lib/couch')
 var couchDb = new Couch(db)
 var Mailer = require('./lib/mailer')
+var Google = require('./lib/google')
 
+app.lib.googleAuth = googleAuth
 app.lib.db = couchDb
 app.lib.utils = require('./lib/utils')
 app.lib.emailer = new Mailer
 app.lib.rk = new Runkeeper(rkOptions, app)
+app.lib.google = new Google(googleConfig, app)
 app.lib.auth = new Auth(app)
 
 // routing
