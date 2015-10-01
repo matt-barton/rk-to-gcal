@@ -6,8 +6,6 @@ describe('runkeeper', function() {
 
 
 	var rkOptions = {
-		client_id: 'CLIENT_ID',
-		client_secret: 'CLIENT_SECRET',
 		redirect_uri: 'REDIRECT_URI',
 		auth_url: 'AUTH_URL'
 	}
