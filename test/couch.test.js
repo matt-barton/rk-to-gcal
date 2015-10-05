@@ -434,7 +434,158 @@ describe ('saveUserRKCode', function () {
 			done()
 		})
 	})
+})
 
+describe('saveUserGoogleToken', function () {
+
+	it ('Given no user identity is supplied\n' +
+		'When saving a user\'s google token\n' +
+		'Then an error is passed to the callback', function (done) {
+
+		var couch = new Couch({})
+		couch.saveUserGoogleToken(null, null, function (e) {
+			e.should.exist
+			e.message.should.equal('No user identity supplied to save google token for.')
+			done()
+		})
+	})
+
+	it ('Given no token is supplied\n' +
+		'When saving a user\'s google token\n' +
+		'Then an error is passed to the callback', function (done) {
+
+		var couch = new Couch({})
+		couch.saveUserGoogleToken('IDENTITY', null, function (e) {
+			e.should.exist
+			e.message.should.equal('No token supplied to save for user.')
+			done()
+		})
+	})
+
+	it ('Given identity and token are supplied\n' +
+		'When saving a user\'s google token\n' +
+		'Then the user\'s record is obtained', function (done) {
+
+		var mockDb = {
+			view: function(viewName, parameters, cb) {
+				viewName.should.equal('users/byIdentity')
+				parameters.should.be.type('object')
+				parameters.key.should.equal('IDENTITY')
+				done()
+			}
+		}
+		var couch = new Couch(mockDb)
+		couch.saveUserGoogleToken('IDENTITY', {
+			property: 'value'
+		}, function () {})
+	})	
+
+	it ('Given there is an error\n' +
+		'When obtaining user\'s record\n' +
+		'Then the error is passed to the callback', function (done) {
+
+		var error = new Error ('This is an error')
+		var mockDb = {
+			view: function(viewName, parameters, cb) {
+				cb(error)
+			}
+		}
+		var couch = new Couch(mockDb)
+		couch.saveUserGoogleToken('IDENTITY', {
+			property: 'value'
+		}, function (e) {
+			e.should.equal(error)
+			done()
+		})
+	})
+
+
+	it ('Given the user\'s record is obtained\n ' +
+		'When saving a user\'s google token code\n ' +
+		'Then the token is saved in the db', function (done) {
+
+		var mockUser = {
+			identity: 'IDENTITY',
+			identityConfirmed: false
+		}
+		var mockDb = {
+			view: function(viewName, parameters, cb) {
+				cb(null, [{
+					value: mockUser
+				}])
+			},
+			save: function(user) {
+				user.identity.should.equal('IDENTITY')
+				user.google.should.be.type('object')
+				user.google.token.should.be.type('object')
+				user.google.token.property.should.equal('value')
+				var dateTest = /^[\d]{4}-[\d]{2}-[\d]{2} [\d]{2}:[\d]{2}:[\d]{2}$/
+				dateTest.test(user.google.connectedDate).should.equal(true)
+				done()
+			}
+		}
+		var couch = new Couch(mockDb)
+		couch.saveUserGoogleToken('IDENTITY', {
+			property: 'value'
+		}, function () {})
+	})
+
+	it ('Given there is an error \n' +
+		'When saving a user\'s google token\n' +
+		'Then the error is passed to the callback', function (done) {
+
+		var error = new Error ('THE ERROR')
+		var mockUser = {
+			identity: 'IDENTITY',
+			identityConfirmed: false
+		}
+		var mockDb = {
+			view: function(viewName, parameters, cb) {
+				cb(null, [{
+					value: mockUser
+				}])
+			},
+			save: function(user, cb) {
+				cb(error)
+			}
+		}
+		var couch = new Couch(mockDb)
+		couch.saveUserGoogleToken('IDENTITY', {
+			property: 'value'
+		}, function (e) {
+			e.should.exist
+			e.message.should.equal('THE ERROR')
+			done()
+		})
+	})
+
+	it ('Given the user\'s record is successfully saved \n' +
+		'When saving a user\'s google token \n' +
+		'Then the a success indicator is passed to the callback', function (done) {
+
+		var mockUser = {
+			identity: 'IDENTITY',
+			identityConfirmed: false
+		}
+		var mockDb = {
+			view: function(viewName, parameters, cb) {
+				cb(null, [{
+					value: mockUser
+				}])
+			},
+			save: function(user, cb) {
+				cb(null)
+			}
+		}
+		var couch = new Couch(mockDb)
+		couch.saveUserGoogleToken('IDENTITY', {
+			property: 'value'
+		}, function (e, result) {
+			should.not.exist(e)
+			result.success.should.equal(true)
+			done()
+		})
+	})
 
 })
 })
